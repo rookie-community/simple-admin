@@ -35,23 +35,23 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="FastReport.Localization" Version="2026.2.1" />
-		<PackageReference Include="FastReport.WPF.Demo" Version="2026.2.1" />
+		<PackageReference Include="FastReport.Localization" Version="2026.2.3" />
+		<PackageReference Include="FastReport.WPF.Demo" Version="2026.2.3" />
 		<PackageReference Include="HandyControl" Version="3.5.1" />
 		<PackageReference Include="HandyControl.Lang.en" Version="3.5.1" />
-		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
 		<PackageReference Include="ValueConverters" Version="3.1.22" />
-		<PackageReference Include="Volo.Abp.Autofac" Version="10.4.1" />
+		<PackageReference Include="Volo.Abp.Autofac" Version="10.5.0" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-		<PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="10.4.1" />
+		<PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="10.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>

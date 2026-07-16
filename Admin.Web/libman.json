@@ -1,0 +1,23 @@
+{
+  "version": "3.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "xm-select@0.0.3",
+      "destination": "wwwroot/lib/xm-select/",
+      "files": [
+        "index.js",
+        "LICENSE",
+        "README.md",
+        "dist/static/element-icons.535877f.woff",
+        "dist/static/docs.js",
+        "dist/static/3.js",
+        "dist/static/2.js",
+        "dist/xm-select.js",
+        "dist/index.html",
+        "dist/static/element-icons.732389d.ttf",
+        "dist/static/wx.b556b2e.jpg"
+      ]
+    }
+  ]
+}

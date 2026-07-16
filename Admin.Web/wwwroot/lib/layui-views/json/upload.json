@@ -1,0 +1,8 @@
+{
+  "code": 0,
+  "msg": "上传成功",
+  "data": {
+    "src": "../layui-admin/style/imgs/layui-logo.jpg",
+    "title": "logo"
+  }
+}

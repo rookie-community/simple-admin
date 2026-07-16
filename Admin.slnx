@@ -18,4 +18,5 @@
     </Project>
     <Project Path="Admin.Quartz/Admin.Quartz.csproj" />
     <Project Path="Admin.Test/Admin.Test.csproj" />
+    <Project Path="Admin.Web/Admin.Web.csproj" Id="94319458-ab54-45ae-a506-c337ebda430e" />
 </Solution>

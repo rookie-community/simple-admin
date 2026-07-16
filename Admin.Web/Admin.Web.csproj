@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.HealthChecks.UI" Version="9.0.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
+		<PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.10" />
+		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+		<PackageReference Include="Volo.Abp.Autofac" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.AspNetCore.SignalR" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.AspNetCore.Authentication.JwtBearer" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.OpenIddict.AspNetCore" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.Swashbuckle" Version="10.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Admin.Application\Admin.Application.csproj" />
+		<ProjectReference Include="..\Admin.HttpApi\Admin.HttpApi.csproj" />
+		<ProjectReference Include="..\Admin.MongoDB\Admin.MongoDB.csproj" />
+		<ProjectReference Include="..\Admin.Quartz\Admin.Quartz.csproj" />
+	</ItemGroup>
+
+</Project>

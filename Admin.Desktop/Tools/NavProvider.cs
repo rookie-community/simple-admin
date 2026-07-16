@@ -44,10 +44,10 @@ namespace Admin.Desktop.Tools
         {
             return new NavDto
             {
-                Icon = "\xf013",
-                Name = "系统设置",
+                Icon = "\xf0ad",
+                Name = "管理",
                 Type = NavType.Group,
-                PermissionName = IdentityPermissions.GroupName,
+                PermissionName = string.Empty,
                 Items = new List<NavDto>
                 {
                     new NavDto
@@ -60,35 +60,65 @@ namespace Admin.Desktop.Tools
                     },
                     new NavDto
                     {
-                        Icon = "\xf2b9",
-                        Name = "角色管理",
-                        Type = NavType.UserControl,
-                        PermissionName = IdentityPermissions.Roles.Default,
-                        Content = typeof(RoleView).FullName,
-                    },
-                    new NavDto
-                    {
-                        Icon = "\xf007",
-                        Name = "用户管理",
-                        Type = NavType.UserControl,
-                        PermissionName = IdentityPermissions.Users.Default,
-                        Content = typeof(UserView).FullName,
+                        Icon = "\xf2c2",
+                        Name = "身份认证管理",
+                        Type = NavType.Group,
+                        PermissionName = IdentityPermissions.GroupName,
+                        Items  = new List<NavDto>
+                        {
+                            new NavDto
+                            {
+                                Icon = "\xf2b9",
+                                Name = "角色管理",
+                                Type = NavType.UserControl,
+                                PermissionName = IdentityPermissions.Roles.Default,
+                                Content = typeof(RoleView).FullName,
+                            },
+                            new NavDto
+                            {
+                                Icon = "\xf007",
+                                Name = "用户管理",
+                                Type = NavType.UserControl,
+                                PermissionName = IdentityPermissions.Users.Default,
+                                Content = typeof(UserView).FullName,
+                            }
+                        }
                     },
                     new NavDto
                     {
                         Icon = "\xe4da",
                         Name = "租户管理",
-                        Type = NavType.UserControl,
-                        PermissionName = TenantManagementPermissions.Tenants.Default,
-                        Content = typeof(TenantView).FullName,
+                        Type = NavType.Group,
+                        PermissionName = TenantManagementPermissions.GroupName,
+                        Items = new List<NavDto>
+                        {
+                            new NavDto
+                            {
+                                Icon = "\xe4da",
+                                Name = "租户",
+                                Type = NavType.UserControl,
+                                PermissionName = TenantManagementPermissions.Tenants.Default,
+                                Content = typeof(TenantView).FullName,
+                            }
+                        }
                     },
                     new NavDto
                     {
-                        Icon = "\xf0e0",
-                        Name = "邮件服务",
-                        Type = NavType.UserControl,
-                        PermissionName = SettingManagementPermissions.Emailing,
-                        Content = typeof(EmailSettingView).FullName,
+                        Icon = "\xf013",
+                        Name = "设置",
+                        Type = NavType.Group,
+                        PermissionName = SettingManagementPermissions.GroupName,
+                        Items = new List<NavDto>
+                        {
+                            new NavDto
+                            {
+                                Icon = "\xf0e0",
+                                Name = "邮件服务",
+                                Type = NavType.UserControl,
+                                PermissionName = SettingManagementPermissions.Emailing,
+                                Content = typeof(EmailSettingView).FullName,
+                            }
+                        }
                     },
                 }
             };
