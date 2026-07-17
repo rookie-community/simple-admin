@@ -103,7 +103,7 @@
                 Style="{StaticResource GroupBoxTab.Small}">
                 <Border Background="{DynamicResource RegionBrush}" CornerRadius="4">
                     <!--<uc:LogControl ItemsSource="{Binding Logs}" />-->
-                    <uc:LogView x:Name="logControl" MaxLineCount="100" />
+                    <uc:LogView x:Name="logControl" MaxLogCount="100" />
                 </Border>
             </GroupBox>
         </Grid>

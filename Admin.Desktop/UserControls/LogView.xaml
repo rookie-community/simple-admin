@@ -11,8 +11,14 @@
     Background="{DynamicResource RegionBrush}"
     mc:Ignorable="d">
     <RichTextBox
-        x:Name="rtbLog"
+        x:Name="RtbLog"
         Padding="0"
+        AcceptsReturn="False"
+        AllowDrop="False"
         IsReadOnly="True"
-        VerticalScrollBarVisibility="Auto" />
+        VerticalScrollBarVisibility="Auto">
+        <RichTextBox.Document>
+            <FlowDocument PagePadding="0" />
+        </RichTextBox.Document>
+    </RichTextBox>
 </UserControl>

@@ -47,12 +47,12 @@
                 hc:InfoElement.Title="域"
                 hc:InfoElement.TitlePlacement="Top"
                 Text="{Binding EmailSettings.SmtpDomain}"
-                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource InvertBoolToVisConverter}}" />
+                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource Boolean2VisibilityReConverter}}" />
             <hc:TextBox
                 hc:InfoElement.Title="用户名"
                 hc:InfoElement.TitlePlacement="Top"
                 Text="{Binding EmailSettings.SmtpUserName}"
-                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource InvertBoolToVisConverter}}" />
+                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource Boolean2VisibilityReConverter}}" />
             <hc:PasswordBox
                 hc:InfoElement.Placeholder="请输入一个值以更新密码"
                 hc:InfoElement.ShowClearButton="True"
@@ -62,7 +62,7 @@
                 MaxLength="16"
                 ShowEyeButton="True"
                 UnsafePassword="{Binding EmailSettings.SmtpPassword}"
-                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource InvertBoolToVisConverter}}" />
+                Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource Boolean2VisibilityReConverter}}" />
             <hc:Divider Margin="5,0" />
             <hc:UniformSpacingPanel Spacing="10">
                 <Button Command="{Binding SendTestEmailCommand}" Style="{StaticResource ButtonDashedPrimary}">
