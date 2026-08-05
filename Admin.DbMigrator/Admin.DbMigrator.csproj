@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Autofac" Version="10.5.0" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="10.6.0" />
     <ProjectReference Include="..\Admin.EntityFrameworkCore\Admin.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Admin.Application.Contracts\Admin.Application.Contracts.csproj" />
   </ItemGroup>

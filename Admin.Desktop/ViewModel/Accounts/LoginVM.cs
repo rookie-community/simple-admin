@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Reflection;
+using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Http.Client;
 using Volo.Abp.Identity;
@@ -143,6 +144,8 @@ namespace Admin.Desktop.ViewModel.Accounts
                 var user = await _userAppService.GetAsync(userId);
                 App.SetCurrentUser(user);
                 var view = new MainWindow();
+                //把应用MainWindow指向真正的主窗口
+                Application.Current.MainWindow = view;
                 view.Show();
                 Owner.Close();
             }

@@ -321,6 +321,7 @@
             <!--  状态栏  -->
             <hc:NotifyIcon
                 x:Name="NotifyIconContextContent"
+                IsBlink="{Binding NotifyIconBlink}"
                 Text="Admin Sample"
                 Token="{Binding NotifyIconToken}"
                 Visibility="{Binding NotifyIconVisibility}">
@@ -328,7 +329,7 @@
                     <ContextMenu Width="140" Style="{StaticResource ContextMenu.Small}">
                         <MenuItem
                             hc:IconElement.Geometry="{StaticResource WindowsGeometry}"
-                            Command="{Binding CurrentViewShowCommand}"
+                            Command="hc:ControlCommands.PushMainWindow2Top"
                             Header="打开主页">
                             <MenuItem.Icon>
                                 <TextBlock
@@ -351,12 +352,12 @@
                 <hc:Interaction.Triggers>
                     <!--  单击托盘图标  -->
                     <hc:EventTrigger EventName="Click">
-                        <hc:EventToCommand Command="{Binding CurrentViewShowCommand}" />
+                        <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
                     </hc:EventTrigger>
 
                     <!--  双击托盘图标  -->
                     <hc:EventTrigger EventName="MouseDoubleClick">
-                        <!--<hc:EventToCommand Command="{Binding MouseCmd}" CommandParameter="MouseDoubleClick" />-->
+                        <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
                     </hc:EventTrigger>
                 </hc:Interaction.Triggers>
             </hc:NotifyIcon>

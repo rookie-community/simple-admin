@@ -69,6 +69,9 @@ namespace Admin.Desktop.ViewModel
         [ObservableProperty]
         public partial Visibility NotifyIconVisibility { get; set; } = Visibility.Visible;
 
+        [ObservableProperty]
+        public partial bool NotifyIconBlink { get; set; }
+
         public MainWindow Owner { get; private set; } = null!;
 
         public MainVM(IPermissionAppService permissionAppService, IIdentityUserAppService identityUserAppService, ILogger<MainVM> logger)
@@ -85,7 +88,7 @@ namespace Admin.Desktop.ViewModel
             try
             {
                 Owner = owner;
-                UserName = App.CurrentUser.UserName;
+                UserName = App.CurrentUser?.UserName ?? string.Empty;
                 Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty;
 
                 var navs = await BuiderNavItems();
@@ -126,12 +129,6 @@ namespace Admin.Desktop.ViewModel
                 return;
             }
             SetCurrentTabItem(navItem);
-        }
-
-        [RelayCommand]
-        private void CurrentViewShow()
-        {
-            Owner.Show();
         }
 
         [RelayCommand]

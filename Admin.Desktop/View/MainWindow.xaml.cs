@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-using Admin.Desktop.Tools;
+﻿using Admin.Desktop.Tools;
 using Admin.Desktop.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -78,7 +76,7 @@ namespace Admin.Desktop.View
             // 递归检查子项
             foreach (object subItem in item.Items)
             {
-                TreeViewItem? subTreeViewItem = item.ItemContainerGenerator.ContainerFromItem(subItem) as TreeViewItem;
+                var subTreeViewItem = item.ItemContainerGenerator.ContainerFromItem(subItem) as TreeViewItem;
                 if (subTreeViewItem != null && FindAndSelectTreeViewItem(subTreeViewItem, targetId))
                 {
                     return true;

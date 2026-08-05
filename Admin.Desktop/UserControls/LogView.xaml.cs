@@ -50,7 +50,7 @@ namespace Admin.Desktop.UserControls
               typeof(LogView),
               new PropertyMetadata(true));
 
-        public bool AutoScroll 
+        public bool AutoScroll
         {
             get => (bool)GetValue(AutoScrollProperty);
             set => SetValue(AutoScrollProperty, value);

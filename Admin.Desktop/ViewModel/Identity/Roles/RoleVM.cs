@@ -201,7 +201,7 @@ namespace Admin.Desktop.ViewModel.Permissions
             }
         }
 
-        private async Task LoadDataAsync() 
+        private async Task LoadDataAsync()
         {
             var result = await _identityRoleAppService.GetListAsync(new GetIdentityRolesInput
             {

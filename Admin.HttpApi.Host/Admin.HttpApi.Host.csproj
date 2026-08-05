@@ -21,12 +21,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="10.5.0" />
-		<PackageReference Include="Volo.Abp.Autofac" Version="10.5.0" />
-		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="10.5.0" />
-		<PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="10.5.0" />
-		<PackageReference Include="Volo.Abp.OpenIddict.AspNetCore" Version="10.5.0" />
-		<PackageReference Include="Volo.Abp.Swashbuckle" Version="10.5.0" />
+		<PackageReference Include="Volo.Abp.AspNetCore.MultiTenancy" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.Autofac" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.OpenIddict.AspNetCore" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.Swashbuckle" Version="10.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.Studio.Client.AspNetCore" Version="3.0.7" />
+		<PackageReference Include="Volo.Abp.Studio.Client.AspNetCore" Version="3.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
