@@ -1,5 +1,8 @@
-﻿using Admin.Desktop.Tools;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
+using Admin.Desktop.Tools;
 using Admin.Desktop.ViewModel;
+using HandyControl.Controls;
 using HandyControl.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
@@ -36,9 +39,9 @@ namespace Admin.Desktop.View
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Hide();
             e.Cancel = true;
-            NotifyIconContextContent.ShowBalloonTip("Admin", "已最小化到任务栏", NotifyIconInfoType.Info);
+            Hide();
+            NotifyIcon.ShowBalloonTip("Admin", "已最小化到任务栏", NotifyIconInfoType.Info, vm.NotifyIconToken);
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

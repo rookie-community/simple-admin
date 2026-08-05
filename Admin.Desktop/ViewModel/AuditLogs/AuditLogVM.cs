@@ -33,11 +33,11 @@ namespace Admin.Desktop.ViewModel.AuditLogs
         public partial string Url { get; set; } = string.Empty;
 
         [ObservableProperty]
-        public partial int? MinDuration { get; set; }
+        public partial int MinDuration { get; set; }
 
         [ObservableProperty]
         [CustomValidation(typeof(AuditLogVM), nameof(ValidateDuration))]
-        public partial int? MaxDuration { get; set; }
+        public partial int MaxDuration { get; set; }
 
         [ObservableProperty]
         public partial string HttpMethod { get; set; } = string.Empty;
@@ -199,11 +199,11 @@ namespace Admin.Desktop.ViewModel.AuditLogs
             AuditLogs = new ObservableCollection<AuditLogDto>(result.Items);
         }
 
-        public static ValidationResult ValidateDuration(int? maxDurationValue, ValidationContext context)
+        public static ValidationResult ValidateDuration(int maxDurationValue, ValidationContext context)
         {
             var instance = (AuditLogVM)context.ObjectInstance;
             var minDurationValue = instance.MinDuration;
-            if (maxDurationValue.HasValue && minDurationValue.HasValue && maxDurationValue > 0 && minDurationValue > 0 && maxDurationValue < minDurationValue)
+            if (maxDurationValue > 0 && minDurationValue > 0 && maxDurationValue < minDurationValue)
             {
                 return new ValidationResult("最大耗时必须大于或等于最小耗时");
             }

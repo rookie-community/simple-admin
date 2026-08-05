@@ -63,6 +63,12 @@ namespace Admin.Desktop.ViewModel
         [ObservableProperty]
         public partial string DialogContainerToken { get; set; } = Guid.NewGuid().ToString();
 
+        [ObservableProperty]
+        public partial string NotifyIconToken { get; set; } = Guid.NewGuid().ToString();
+
+        [ObservableProperty]
+        public partial Visibility NotifyIconVisibility { get; set; } = Visibility.Visible;
+
         public MainWindow Owner { get; private set; } = null!;
 
         public MainVM(IPermissionAppService permissionAppService, IIdentityUserAppService identityUserAppService, ILogger<MainVM> logger)
@@ -219,8 +225,7 @@ namespace Admin.Desktop.ViewModel
         {
             var view = new Login();
             view.Show();
-
-            Owner.NotifyIconContextContent.Visibility = Visibility.Collapsed;
+            NotifyIconVisibility = Visibility.Collapsed;
             Owner.Close();
             Owner = null!;
         }

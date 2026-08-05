@@ -308,7 +308,7 @@
                 <hc:TabControl
                     IsAnimationEnabled="True"
                     IsDraggable="True"
-                    IsScrollable="True"
+                    IsScrollable="False"
                     ItemsSource="{Binding TabItems}"
                     OverflowMenuDisplayMemberPath="Header"
                     SelectedIndex="{Binding TabSelectedIndex}"
@@ -322,7 +322,8 @@
             <hc:NotifyIcon
                 x:Name="NotifyIconContextContent"
                 Text="Admin Sample"
-                Visibility="Visible">
+                Token="{Binding NotifyIconToken}"
+                Visibility="{Binding NotifyIconVisibility}">
                 <hc:NotifyIcon.ContextMenu>
                     <ContextMenu Width="140" Style="{StaticResource ContextMenu.Small}">
                         <MenuItem

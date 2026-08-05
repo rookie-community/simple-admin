@@ -10,15 +10,34 @@
     d:DesignWidth="800"
     Background="{DynamicResource RegionBrush}"
     mc:Ignorable="d">
-    <RichTextBox
-        x:Name="RtbLog"
-        Padding="0"
-        AcceptsReturn="False"
-        AllowDrop="False"
-        IsReadOnly="True"
-        VerticalScrollBarVisibility="Auto">
-        <RichTextBox.Document>
-            <FlowDocument PagePadding="0" />
-        </RichTextBox.Document>
-    </RichTextBox>
+    <DockPanel>
+        <hc:UniformSpacingPanel
+            Margin="5,1"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal"
+            Spacing="10">
+            <Button
+                hc:IconElement.Geometry="{StaticResource DeleteGeometry}"
+                Click="Button_Clear_Click"
+                Style="{StaticResource ButtonDefault.Small}"
+                ToolTip="清除所有" />
+            <ToggleButton
+                HorizontalAlignment="Center"
+                hc:ToggleButtonAttach.ShowLabel="True"
+                Content="自动滚动"
+                IsChecked="{Binding AutoScroll, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:LogView}}, Mode=TwoWay}"
+                Style="{StaticResource ToggleButtonSwitch.Small}" />
+        </hc:UniformSpacingPanel>
+        <RichTextBox
+            x:Name="RtbLog"
+            Padding="0"
+            AcceptsReturn="False"
+            AllowDrop="False"
+            IsReadOnly="True"
+            VerticalScrollBarVisibility="Auto">
+            <RichTextBox.Document>
+                <FlowDocument PagePadding="0" />
+            </RichTextBox.Document>
+        </RichTextBox>
+    </DockPanel>
 </UserControl>

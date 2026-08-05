@@ -50,6 +50,20 @@ namespace Admin.Desktop.UserControls
               typeof(LogView),
               new PropertyMetadata(true));
 
+        public bool AutoScroll 
+        {
+            get => (bool)GetValue(AutoScrollProperty);
+            set => SetValue(AutoScrollProperty, value);
+        }
+
+        public static readonly DependencyProperty AutoScrollProperty =
+          DependencyProperty.Register(
+              nameof(AutoScroll),
+              typeof(bool),
+              typeof(LogView),
+              new PropertyMetadata(true));
+
+
         /// <summary>
         /// 通用日志输出
         /// </summary>
@@ -102,8 +116,26 @@ namespace Admin.Desktop.UserControls
                         blocks.InsertBefore(blocks.FirstBlock, para);
                     }
 
-                    //滚动条位置保持不变
-                    RtbLog.ScrollToVerticalOffset(currentOffset);
+                    //滚动条
+                    if (AutoScroll)
+                    {
+                        //在尾部添加
+                        if (AddAtTail)
+                        {
+                            //自动滚动到底部
+                            RtbLog.ScrollToEnd();
+                        }
+                        else
+                        {
+                            //自动滚动到顶部
+                            RtbLog.ScrollToHome();
+                        }
+                    }
+                    else
+                    {
+                        //滚动条位置保持不变
+                        RtbLog.ScrollToVerticalOffset(currentOffset);
+                    }
                 }
             });
         }
@@ -129,6 +161,11 @@ namespace Admin.Desktop.UserControls
             var brush = ResourceHelper.GetResource<SolidColorBrush>(resourceToken);
             // 资源找不到时给默认黑色，防止null报错
             return brush ?? Brushes.Black;
+        }
+
+        private void Button_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            Clear();
         }
     }
 }
