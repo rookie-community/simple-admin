@@ -257,110 +257,124 @@
             </StackPanel>
         </Grid>
     </hc:Window.NonClientAreaContent>
-    <hc:DialogContainer>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="150"
-                    MinWidth="120"
-                    MaxWidth="300" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TreeView
-                x:Name="NavigationView"
-                Grid.Column="0"
-                ItemsSource="{Binding NavItems}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectedItemChanged">
-                        <i:InvokeCommandAction Command="{Binding SwitchItemCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Items}">
-                        <TextBlock Tag="{Binding Id}">
-                            <Run
+    <Grid>
+        <!--  状态栏  -->
+        <hc:NotifyIcon
+            x:Name="NotifyIconContextContent"
+            IsBlink="{Binding NotifyIconBlink}"
+            Text="Admin Sample"
+            Token="{Binding NotifyIconToken}"
+            Visibility="{Binding NotifyIconVisibility}">
+            <hc:NotifyIcon.ContextMenu>
+                <ContextMenu Width="140" Style="{StaticResource ContextMenu.Small}">
+                    <MenuItem
+                        hc:IconElement.Geometry="{StaticResource WindowsGeometry}"
+                        Command="hc:ControlCommands.PushMainWindow2Top"
+                        Header="打开主页">
+                        <MenuItem.Icon>
+                            <TextBlock
                                 FontFamily="{StaticResource FA_Regular}"
-                                FontSize="12"
                                 Foreground="{DynamicResource DarkInfoBrush}"
-                                Text="{Binding Icon}" />
-                            <Run Text="{Binding DisplayName, Mode=OneWay}" />
-                        </TextBlock>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-            <GridSplitter
-                Grid.Column="1"
-                Margin="1,0"
-                HorizontalAlignment="Stretch"
-                Background="{DynamicResource DefaultBrush}" />
-            <DockPanel
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="{DynamicResource DarkDefaultBrush}">
-                <TextBlock
-                    Padding="0,5"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    DockPanel.Dock="Bottom"
-                    Text="Copyright © 2026 Admin Sample" />
-                <hc:TabControl
-                    IsAnimationEnabled="True"
-                    IsDraggable="True"
-                    IsScrollable="False"
-                    ItemsSource="{Binding TabItems}"
-                    OverflowMenuDisplayMemberPath="Header"
-                    SelectedIndex="{Binding TabSelectedIndex}"
-                    SelectionChanged="TabControl_SelectionChanged"
-                    ShowCloseButton="True"
-                    ShowOverflowButton="False"
-                    ShowScrollButton="True"
-                    TabItemWidth="150" />
-            </DockPanel>
-            <!--  状态栏  -->
-            <hc:NotifyIcon
-                x:Name="NotifyIconContextContent"
-                IsBlink="{Binding NotifyIconBlink}"
-                Text="Admin Sample"
-                Token="{Binding NotifyIconToken}"
-                Visibility="{Binding NotifyIconVisibility}">
-                <hc:NotifyIcon.ContextMenu>
-                    <ContextMenu Width="140" Style="{StaticResource ContextMenu.Small}">
-                        <MenuItem
-                            hc:IconElement.Geometry="{StaticResource WindowsGeometry}"
-                            Command="hc:ControlCommands.PushMainWindow2Top"
-                            Header="打开主页">
-                            <MenuItem.Icon>
-                                <TextBlock
-                                    FontFamily="{StaticResource FA_Regular}"
-                                    Foreground="{DynamicResource DarkInfoBrush}"
-                                    Text="&#xf015;" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Command="hc:ControlCommands.ShutdownApp" Header="退出">
-                            <MenuItem.Icon>
-                                <TextBlock
-                                    FontFamily="{StaticResource FA_Regular}"
-                                    Foreground="{DynamicResource DarkDangerBrush}"
-                                    Text="&#xf057;" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </hc:NotifyIcon.ContextMenu>
-                <hc:Interaction.Triggers>
-                    <!--  单击托盘图标  -->
-                    <hc:EventTrigger EventName="Click">
-                        <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
-                    </hc:EventTrigger>
+                                Text="&#xf015;" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="hc:ControlCommands.ShutdownApp" Header="退出">
+                        <MenuItem.Icon>
+                            <TextBlock
+                                FontFamily="{StaticResource FA_Regular}"
+                                Foreground="{DynamicResource DarkDangerBrush}"
+                                Text="&#xf057;" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </hc:NotifyIcon.ContextMenu>
+            <hc:Interaction.Triggers>
+                <!--  单击托盘图标  -->
+                <hc:EventTrigger EventName="Click">
+                    <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
+                </hc:EventTrigger>
 
-                    <!--  双击托盘图标  -->
-                    <hc:EventTrigger EventName="MouseDoubleClick">
-                        <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
-                    </hc:EventTrigger>
-                </hc:Interaction.Triggers>
-            </hc:NotifyIcon>
-        </Grid>
-    </hc:DialogContainer>
+                <!--  双击托盘图标  -->
+                <hc:EventTrigger EventName="MouseDoubleClick">
+                    <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+        </hc:NotifyIcon>
+
+        <!--  内容  -->
+        <hc:DialogContainer>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="150"
+                        MinWidth="120"
+                        MaxWidth="300" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TreeView
+                    x:Name="NavigationView"
+                    Grid.Column="0"
+                    ItemsSource="{Binding NavItems}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <i:InvokeCommandAction Command="{Binding SwitchItemCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                            <TextBlock Tag="{Binding Id}">
+                                <Run
+                                    FontFamily="{StaticResource FA_Regular}"
+                                    FontSize="12"
+                                    Foreground="{DynamicResource DarkInfoBrush}"
+                                    Text="{Binding Icon}" />
+                                <Run Text="{Binding DisplayName, Mode=OneWay}" />
+                            </TextBlock>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <GridSplitter
+                    Grid.Column="1"
+                    Margin="1,0"
+                    HorizontalAlignment="Stretch">
+                    <GridSplitter.Template>
+                        <ControlTemplate TargetType="GridSplitter">
+                            <Border x:Name="PART_Border" Background="{DynamicResource DefaultBrush}" />
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="PART_Border" Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </GridSplitter.Template>
+                </GridSplitter>
+                <DockPanel
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{DynamicResource DarkDefaultBrush}">
+                    <TextBlock
+                        Padding="0,5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Bottom"
+                        Text="Copyright © 2026 Admin Sample" />
+                    <hc:TabControl
+                        IsAnimationEnabled="True"
+                        IsDraggable="True"
+                        IsScrollable="False"
+                        ItemsSource="{Binding TabItems}"
+                        OverflowMenuDisplayMemberPath="Header"
+                        SelectedIndex="{Binding TabSelectedIndex}"
+                        SelectionChanged="TabControl_SelectionChanged"
+                        ShowCloseButton="True"
+                        ShowOverflowButton="False"
+                        ShowScrollButton="True"
+                        TabItemWidth="150" />
+                </DockPanel>
+            </Grid>
+        </hc:DialogContainer>
+    </Grid>
 </hc:Window>
