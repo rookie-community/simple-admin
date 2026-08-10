@@ -1,12 +1,12 @@
-﻿using Admin.Desktop.View.Identity.Roles;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.Windows;
+using Admin.Desktop.View.Identity.Roles;
 using Admin.Desktop.View.Permissions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 using Volo.Abp.Validation;
@@ -38,7 +38,7 @@ namespace Admin.Desktop.ViewModel.Permissions
         public partial string DialogContainerToken { get; set; } = Guid.NewGuid().ToString();
 
         [ObservableProperty]
-        public partial Dictionary<string, Visibility> ButtonVis { get; set; } = new Dictionary<string, Visibility>();
+        public partial Dictionary<string, Visibility> BtnPerms { get; set; } = new Dictionary<string, Visibility>();
 
         public RoleView Owner { get; private set; } = null!;
 
@@ -46,12 +46,30 @@ namespace Admin.Desktop.ViewModel.Permissions
         {
             _identityRoleAppService = identityRoleAppService;
             _logger = logger;
+            LoadButtonPermissions();
         }
 
         internal async Task InitialAsync(RoleView owner)
         {
             Owner = owner;
             await SearchCommand.ExecuteAsync(null);
+        }
+
+        private void LoadButtonPermissions()
+        {
+            var btnTemps = new Dictionary<string, string>
+            {
+                { "Create",IdentityPermissions.Roles.Create},
+                { "Update",IdentityPermissions.Roles.Update },
+                { "ManagePermissions", IdentityPermissions.Roles.ManagePermissions },
+                { "Delete", IdentityPermissions.Roles.Delete },
+            };
+
+            foreach (var btnTemp in btnTemps)
+            {
+                var isGranted = App.PermissionChecker(btnTemp.Value);
+                BtnPerms.TryAdd(btnTemp.Key, isGranted);
+            }
         }
 
         [RelayCommand]

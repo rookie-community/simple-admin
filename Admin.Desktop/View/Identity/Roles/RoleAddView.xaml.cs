@@ -1,6 +1,6 @@
-﻿using Admin.Desktop.ViewModel.Identity.Roles;
+﻿using System.Windows;
+using Admin.Desktop.ViewModel.Identity.Roles;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
 
 namespace Admin.Desktop.View.Identity.Roles
 {

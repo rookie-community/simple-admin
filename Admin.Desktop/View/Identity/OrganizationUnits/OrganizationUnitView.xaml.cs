@@ -1,8 +1,8 @@
-﻿using Admin.Desktop.ViewModel.Identity.OrganizationUnits;
+﻿using System.Windows;
+using System.Windows.Controls;
+using Admin.Desktop.ViewModel.Identity.OrganizationUnits;
 using Admin.OrganizationUnits;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace Admin.Desktop.View.Identity.OrganizationUnits
 {

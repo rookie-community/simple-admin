@@ -1,13 +1,13 @@
-﻿using Admin.AuditLogs;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Windows;
+using Admin.AuditLogs;
 using Admin.Desktop.View.AuditLogs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Http.Client;
 using MessageBox = HandyControl.Controls.MessageBox;
@@ -77,6 +77,7 @@ namespace Admin.Desktop.ViewModel.AuditLogs
         {
             _auditLogAppService = auditLogAppService;
             _logger = logger;
+            LoadButtonPermissions();
         }
 
         internal async Task InitialAsync(AuditLogView owner)
@@ -111,6 +112,21 @@ namespace Admin.Desktop.ViewModel.AuditLogs
             finally
             {
                 loadDialog.Close();
+            }
+        }
+
+        private void LoadButtonPermissions()
+        {
+            var btnTemps = new Dictionary<string, string>
+            {
+                { "Export",string.Empty},
+                { "Detail",string.Empty },
+            };
+
+            foreach (var btnTemp in btnTemps)
+            {
+                var isGranted = App.PermissionChecker(btnTemp.Value);
+                BtnPerms.TryAdd(btnTemp.Key, isGranted);
             }
         }
 
@@ -162,7 +178,7 @@ namespace Admin.Desktop.ViewModel.AuditLogs
         [RelayCommand]
         private void Detail(AuditLogDto auditLog)
         {
-
+            MessageBox.Warning("功能暂未开放");
         }
 
         [RelayCommand]

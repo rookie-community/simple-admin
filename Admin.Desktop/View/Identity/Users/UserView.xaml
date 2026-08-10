@@ -46,8 +46,7 @@
                         hc:IconElement.Geometry="{StaticResource SearchGeometry}"
                         Command="{Binding SearchCommand}"
                         Content="搜索"
-                        Style="{StaticResource ButtonPrimary}"
-                        Visibility="{Binding Buttons[Serach]}" />
+                        Style="{StaticResource ButtonPrimary}" />
                     <Button
                         hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}"
                         Command="{Binding ResetCommand}"
@@ -120,12 +119,12 @@
                                             CommandParameter="{Binding}"
                                             Content="编辑"
                                             Style="{StaticResource ButtonDefault.Small}"
-                                            Visibility="{Binding Path=DataContext.BtnPerms[Edit], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            Visibility="{Binding Path=DataContext.BtnPerms[Update], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
                                         <Button
                                             Command="{Binding DataContext.EditPermCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource ButtonInfo.Small}"
-                                            Visibility="{Binding Path=DataContext.BtnPerms[EditPerm], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                            Visibility="{Binding Path=DataContext.BtnPerms[ManagePermissions], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                             <hc:UniformSpacingPanel Spacing="4">
                                                 <TextBlock
                                                     Padding="2"

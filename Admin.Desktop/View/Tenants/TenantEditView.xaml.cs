@@ -1,6 +1,6 @@
-﻿using Admin.Desktop.ViewModel.Tenants;
+﻿using System.Windows;
+using Admin.Desktop.ViewModel.Tenants;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
 
 namespace Admin.Desktop.View.Tenants
 {

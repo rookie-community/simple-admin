@@ -1,6 +1,6 @@
-﻿using Admin.Desktop.ViewModel.Reports;
+﻿using System.Windows.Controls;
+using Admin.Desktop.ViewModel.Reports;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Controls;
 
 namespace Admin.Desktop.View.Reports
 {

@@ -1,4 +1,15 @@
-﻿using Admin.Commons;
+﻿using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Globalization;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Navigation;
+using System.Windows.Threading;
+using Admin.Commons;
 using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.Tools;
 using Admin.Desktop.Tools.Messages;
@@ -15,17 +26,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.Logging;
 using Microsoft.Web.WebView2.Wpf;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Globalization;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Http.Client;
 using Volo.Abp.Identity;
@@ -37,7 +37,7 @@ namespace Admin.Desktop.ViewModel
 {
     public partial class MainVM : ObservableRecipient, IRecipient<NavDto>, IRecipient<LogoutMessage>, ITransientDependency
     {
-        private readonly string TitalPrefix = "Admin";
+        private readonly string TitlePrefix = "Admin";
         private readonly IPermissionAppService _permissionAppService;
         private readonly IIdentityUserAppService _identityUserAppService;
         private readonly ILogger<MainVM> _logger;
@@ -243,6 +243,7 @@ namespace Admin.Desktop.ViewModel
                     var data = permissionResult.Groups.SelectMany(x => x.Permissions).ToList();
                     permissions.AddRange(data);
                 }
+                App.SetCurrentUserPermission(permissions);
             }
             catch (Exception ex)
             {
@@ -256,7 +257,7 @@ namespace Admin.Desktop.ViewModel
                     Growl.Warning(ex.Message);
                 }
             }
-            //var permissionResult2 = await _permissionAppService.GetByGroupAsync(IdentityPermissions.GroupName,providerName, providerKey);
+            //var permissionResult2 = await _permissionAppService.GetByGroupAsync(IdentityPermissions.GroupName, providerName, providerKey);
             var permissionNames = permissions.Where(x => x.IsGranted).DistinctBy(x => x.Name).Select(x => x.Name).ToList();
             var navItems = FilterPermissionTree(allNavItems, node => string.IsNullOrEmpty(node.PermissionName) || permissionNames.Contains(node.PermissionName));
             return navItems;
@@ -306,7 +307,7 @@ namespace Admin.Desktop.ViewModel
                     if (tabItemIdx >= 0)
                     {
                         TabSelectedIndex = tabItemIdx;
-                        Title = $"{TitalPrefix} - {navItem.DisplayName}";
+                        Title = $"{TitlePrefix} - {navItem.DisplayName}";
                         return;
                     }
 
@@ -366,7 +367,7 @@ namespace Admin.Desktop.ViewModel
                     if (navItem.Type == NavType.Content)
                     {
                         tabItem.Content = navItem.Content;
-                        Title = $"{TitalPrefix} - {navItem.DisplayName}";
+                        Title = $"{TitlePrefix} - {navItem.DisplayName}";
                         TabItems.Add(tabItem);
                         TabSelectedIndex = TabItems.IndexOf(tabItem);
                         return;
@@ -393,7 +394,7 @@ namespace Admin.Desktop.ViewModel
                             Growl.Error($"无法打开页面，类型错误：{navItem.Content}");
                             return;
                         }
-                        Title = $"{TitalPrefix} - {navItem.DisplayName}";
+                        Title = $"{TitlePrefix} - {navItem.DisplayName}";
                         TabItems.Add(tabItem);
                         TabSelectedIndex = TabItems.IndexOf(tabItem);
                         return;
@@ -427,7 +428,7 @@ namespace Admin.Desktop.ViewModel
                         };
 
                         tabItem.Content = dialogContainer;
-                        Title = $"{TitalPrefix} - {navItem.DisplayName}";
+                        Title = $"{TitlePrefix} - {navItem.DisplayName}";
                         TabItems.Add(tabItem);
                         TabSelectedIndex = TabItems.IndexOf(tabItem);
                         return;

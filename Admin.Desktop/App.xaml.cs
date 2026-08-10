@@ -1,4 +1,10 @@
-﻿using Admin.Desktop.Resources.Langs;
+﻿using System.Configuration;
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Threading;
+using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.View.Accounts;
 using FastReport.Utils;
 using HandyControl.Tools;
@@ -8,14 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using System.Configuration;
-using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Threading;
 using Volo.Abp;
 using Volo.Abp.Identity;
+using Volo.Abp.PermissionManagement;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Admin.Desktop
@@ -26,6 +27,8 @@ namespace Admin.Desktop
     public partial class App : Application
     {
         public static IdentityUserDto CurrentUser { get; private set; } = null!;
+
+        public static Dictionary<string, bool> CurrentUserPermissions { get; private set; } = new Dictionary<string, bool>();
 
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
@@ -119,6 +122,25 @@ namespace Admin.Desktop
         }
 
         internal static void SetCurrentUser(IdentityUserDto user) => CurrentUser = user;
+
+        internal static void SetCurrentUserPermission(IEnumerable<PermissionGrantInfoDto> permissionGrantInfos)
+        {
+            CurrentUserPermissions = permissionGrantInfos.ToLookup(x => x.Name).ToDictionary(k => k.Key, v => v.OrderByDescending(x => x.IsGranted).Select(x => x.IsGranted).First());
+        }
+
+        internal static Visibility PermissionChecker(string permissionName)
+        {
+            if (CurrentUserPermissions.TryGetValue(permissionName, out var isGranted))
+            {
+                if (!isGranted)
+                {
+                    //无权限
+                    return Visibility.Collapsed;
+                }
+            }
+            //有权限或未配置则显示
+            return Visibility.Visible;
+        }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {

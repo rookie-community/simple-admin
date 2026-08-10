@@ -1,12 +1,14 @@
-﻿using Admin.Desktop.View.Tenants;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using Admin.Desktop.View.Tenants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Validation;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace Admin.Desktop.ViewModel.Tenants
 {
@@ -33,18 +35,39 @@ namespace Admin.Desktop.ViewModel.Tenants
         [ObservableProperty]
         public partial string DialogContainerToken { get; set; } = Guid.NewGuid().ToString();
 
+        [ObservableProperty]
+        public partial Dictionary<string, Visibility> BtnPerms { get; set; } = new Dictionary<string, Visibility>();
+
         public TenantView Owner { get; private set; } = null!;
 
         public TenantVM(ITenantAppService tenantAppService, ILogger<TenantVM> logger)
         {
             _tenantAppService = tenantAppService;
             _logger = logger;
+            LoadButtonPermissions();
         }
 
         internal async Task InitialAsync(TenantView owner)
         {
             Owner = owner;
             await SearchCommand.ExecuteAsync(null);
+        }
+
+        private void LoadButtonPermissions()
+        {
+            var btnTemps = new Dictionary<string, string>
+            {
+                { "Create",TenantManagementPermissions.Tenants.Create},
+                { "Update",TenantManagementPermissions.Tenants.Update },
+                { "ManageFeatures", TenantManagementPermissions.Tenants.ManageFeatures },
+                { "Delete", TenantManagementPermissions.Tenants.Delete },
+            };
+
+            foreach (var btnTemp in btnTemps)
+            {
+                var isGranted = App.PermissionChecker(btnTemp.Value);
+                BtnPerms.TryAdd(btnTemp.Key, isGranted);
+            }
         }
 
         [RelayCommand]

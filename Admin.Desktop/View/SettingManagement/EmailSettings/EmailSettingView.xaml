@@ -65,7 +65,10 @@
                 Visibility="{Binding EmailSettings.SmtpUseDefaultCredentials, Converter={StaticResource Boolean2VisibilityReConverter}}" />
             <hc:Divider Margin="5,0" />
             <hc:UniformSpacingPanel Spacing="10">
-                <Button Command="{Binding SendTestEmailCommand}" Style="{StaticResource ButtonDashedPrimary}">
+                <Button
+                    Command="{Binding SendTestEmailCommand}"
+                    Style="{StaticResource ButtonDashedPrimary}"
+                    Visibility="{Binding BtnPerms[EmailingTest]}">
                     <hc:UniformSpacingPanel Spacing="4">
                         <TextBlock
                             Padding="2"

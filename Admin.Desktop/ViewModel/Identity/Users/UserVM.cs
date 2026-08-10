@@ -1,14 +1,13 @@
-﻿using Admin.Desktop.View.Identity.Users;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.Windows;
+using Admin.Desktop.View.Identity.Users;
 using Admin.Desktop.View.Permissions;
 using Admin.Desktop.View.Users;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Windows;
-using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 using Volo.Abp.Validation;
@@ -18,10 +17,6 @@ namespace Admin.Desktop.ViewModel.Users
 {
     public partial class UserVM : ObservableObject, ITransientDependency
     {
-        private readonly IIdentityUserAppService _identityUserAppService;
-        private readonly IPermissionChecker _permissionChecker;
-        private readonly ILogger<UserVM> _logger;
-
         [ObservableProperty]
         public partial string Name { get; set; } = string.Empty;
 
@@ -45,18 +40,14 @@ namespace Admin.Desktop.ViewModel.Users
 
         public UserView Owner { get; private set; } = null!;
 
-        public UserVM(IIdentityUserAppService identityUserAppService, IPermissionChecker permissionChecker, ILogger<UserVM> logger)
+        private readonly IIdentityUserAppService _identityUserAppService;
+        private readonly ILogger<UserVM> _logger;
+
+        public UserVM(IIdentityUserAppService identityUserAppService, ILogger<UserVM> logger)
         {
             _identityUserAppService = identityUserAppService;
-            _permissionChecker = permissionChecker;
             _logger = logger;
-            //BtnPerms = new Dictionary<string, Visibility>
-            //{
-            //    { nameof(IdentityPermissions.Users.Create), Visibility.Hidden },
-            //    { nameof(IdentityPermissions.Users.Update), Visibility.Hidden },
-            //    { nameof(IdentityPermissions.Users.ManagePermissions), Visibility.Hidden },
-            //    { nameof(IdentityPermissions.Users.Delete), Visibility.Hidden },
-            //};
+            LoadButtonPermissions();
         }
 
         internal async Task InitialAsync(UserView owner)
@@ -65,16 +56,6 @@ namespace Admin.Desktop.ViewModel.Users
             try
             {
                 Owner = owner;
-
-                var result = await _permissionChecker.IsGrantedAsync(new string[]
-                {
-                    IdentityPermissions.Users.Create,
-                    IdentityPermissions.Users.Update,
-                    IdentityPermissions.Users.ManagePermissions,
-                    IdentityPermissions.Users.Delete,
-                });
-
-                var result2 = await _permissionChecker.IsGrantedAsync(IdentityPermissions.Users.Create);
                 await LoadDataAsync();
             }
             catch (Exception ex)
@@ -85,6 +66,23 @@ namespace Admin.Desktop.ViewModel.Users
             finally
             {
                 loadDialog.Close();
+            }
+        }
+
+        private void LoadButtonPermissions()
+        {
+            var btnTemps = new Dictionary<string, string>
+            {
+                { "Create",IdentityPermissions.Users.Create},
+                { "Update",IdentityPermissions.Users.Update },
+                { "ManagePermissions", IdentityPermissions.Users.ManagePermissions },
+                { "Delete", IdentityPermissions.Users.Delete },
+            };
+
+            foreach (var btnTemp in btnTemps)
+            {
+                var isGranted = App.PermissionChecker(btnTemp.Value);
+                BtnPerms.TryAdd(btnTemp.Key, isGranted);
             }
         }
 

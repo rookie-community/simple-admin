@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
-using System.Threading.Tasks;
 
 namespace Admin;
 
@@ -28,7 +28,7 @@ public class Program
                     loggerConfiguration
                         .ReadFrom.Configuration(context.Configuration)
                         .ReadFrom.Services(services)
-                        .WriteTo.Async(c => c.AbpStudio(services));
+                        .WriteTo.Async(c => c.Console());
                 });
             await builder.AddApplicationAsync<AdminHttpApiHostModule>();
             var app = builder.Build();

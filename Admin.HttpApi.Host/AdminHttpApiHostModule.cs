@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 using Admin.EntityFrameworkCore;
 using Admin.HealthChecks;
 using Admin.MultiTenancy;
@@ -12,9 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi;
 using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
-using System;
-using System.IO;
-using System.Linq;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
@@ -26,8 +26,6 @@ using Volo.Abp.Identity.AspNetCore;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
-using Volo.Abp.Studio;
-using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
@@ -37,7 +35,6 @@ namespace Admin;
 [DependsOn(
     typeof(AdminHttpApiModule),
     typeof(AdminQuartzModule),
-    typeof(AbpStudioClientAspNetCoreModule),
     typeof(AbpAutofacModule),
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(AdminApplicationModule),
@@ -117,7 +114,6 @@ public class AdminHttpApiHostModule : AbpModule
             options.CheckLibs = false;
         });
 
-        ConfigureStudio(hostingEnvironment);
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureConventionalControllers();
@@ -125,17 +121,6 @@ public class AdminHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
-    }
-
-    private void ConfigureStudio(IHostEnvironment hostingEnvironment)
-    {
-        if (hostingEnvironment.IsProduction())
-        {
-            Configure<AbpStudioClientOptions>(options =>
-            {
-                options.IsLinkEnabled = false;
-            });
-        }
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -244,7 +229,6 @@ public class AdminHttpApiHostModule : AbpModule
 
         app.UseRouting();
         app.MapAbpStaticAssets();
-        app.UseAbpStudioLink();
         app.UseAbpSecurityHeaders();
         app.UseCors();
         app.UseAuthentication();

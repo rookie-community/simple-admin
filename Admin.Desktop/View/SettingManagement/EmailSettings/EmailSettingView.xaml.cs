@@ -1,6 +1,6 @@
-﻿using Admin.Desktop.ViewModel.SettingManagement.EmailSettings;
+﻿using System.Windows.Controls;
+using Admin.Desktop.ViewModel.SettingManagement.EmailSettings;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Controls;
 
 namespace Admin.Desktop.View.SettingManagement.EmailSettings
 {

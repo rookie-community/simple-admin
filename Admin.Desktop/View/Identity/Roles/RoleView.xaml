@@ -45,8 +45,7 @@
                         hc:IconElement.Geometry="{StaticResource SearchGeometry}"
                         Command="{Binding SearchCommand}"
                         Content="搜索"
-                        Style="{StaticResource ButtonPrimary}"
-                        Visibility="{Binding ButtonVis[Serach]}" />
+                        Style="{StaticResource ButtonPrimary}" />
                     <Button
                         hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}"
                         Command="{Binding ResetCommand}"
@@ -65,14 +64,14 @@
                     Command="{Binding AddCommand}"
                     Content="新增"
                     Style="{StaticResource ButtonDefault}"
-                    Visibility="{Binding ButtonVis[Create]}" />
+                    Visibility="{Binding BtnPerms[Create]}" />
                 <Button
                     hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
                     Command="{Binding BatchDeleteCommand}"
                     CommandParameter="{Binding ElementName=DG, Path=SelectedItems}"
                     Content="批量删除"
                     Style="{StaticResource ButtonDanger}"
-                    Visibility="{Binding ButtonVis[BatchDelete]}" />
+                    Visibility="{Binding BtnPerms[Delete]}" />
             </hc:UniformSpacingPanel>
         </ToolBar>
         <hc:DialogContainer Grid.Row="2">
@@ -115,12 +114,12 @@
                                             CommandParameter="{Binding}"
                                             Content="编辑"
                                             Style="{StaticResource ButtonDefault.Small}"
-                                            Visibility="{Binding Path=DataContext.ButtonVis[EditBtn], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            Visibility="{Binding Path=DataContext.BtnPerms[Update], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
                                         <Button
                                             Command="{Binding DataContext.EditPermCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}"
                                             Style="{StaticResource ButtonInfo.Small}"
-                                            Visibility="{Binding Path=DataContext.ButtonVis[EditPermBtn], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                            Visibility="{Binding Path=DataContext.BtnPerms[ManagePermissions], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                             <hc:UniformSpacingPanel Spacing="4">
                                                 <TextBlock
                                                     Padding="2"
@@ -135,7 +134,7 @@
                                             CommandParameter="{Binding}"
                                             Content="删除"
                                             Style="{StaticResource ButtonDanger.Small}"
-                                            Visibility="{Binding Path=DataContext.ButtonVis[DeleteBtn], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            Visibility="{Binding Path=DataContext.BtnPerms[Delete], RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
                                     </hc:UniformSpacingPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

@@ -1,10 +1,10 @@
-﻿using HealthChecks.UI.Client;
+﻿using System;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Admin.HealthChecks;
 

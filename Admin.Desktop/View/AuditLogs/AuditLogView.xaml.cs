@@ -1,6 +1,6 @@
-﻿using Admin.Desktop.ViewModel.AuditLogs;
+﻿using System.Windows.Controls;
+using Admin.Desktop.ViewModel.AuditLogs;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Controls;
 
 namespace Admin.Desktop.View.AuditLogs
 {

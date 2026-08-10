@@ -1,4 +1,5 @@
-﻿using Admin.Desktop.View.SettingManagement.EmailSettings;
+﻿using System.Windows;
+using Admin.Desktop.View.SettingManagement.EmailSettings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
@@ -11,21 +12,25 @@ namespace Admin.Desktop.ViewModel.SettingManagement.EmailSettings
 {
     public partial class EmailSettingVM : ObservableRecipient, ITransientDependency
     {
-        private readonly IEmailSettingsAppService _emailSettingsAppService;
-        private readonly ILogger<EmailSettingVM> _logger;
-
         [ObservableProperty]
         public partial EmailSettingsDto EmailSettings { get; set; } = null!;
 
         [ObservableProperty]
         public partial string DialogContainerToken { get; set; } = Guid.NewGuid().ToString();
 
+        [ObservableProperty]
+        public partial Dictionary<string, Visibility> BtnPerms { get; set; } = new Dictionary<string, Visibility>();
+
         public EmailSettingView Owner { get; private set; } = null!;
+
+        private readonly IEmailSettingsAppService _emailSettingsAppService;
+        private readonly ILogger<EmailSettingVM> _logger;
 
         public EmailSettingVM(IEmailSettingsAppService emailSettingsAppService, ILogger<EmailSettingVM> logger)
         {
             _emailSettingsAppService = emailSettingsAppService;
             _logger = logger;
+            LoadButtonPermissions();
         }
 
         internal async Task InitialAsync(EmailSettingView owner)
@@ -45,6 +50,20 @@ namespace Admin.Desktop.ViewModel.SettingManagement.EmailSettings
             finally
             {
                 loadDialog.Close();
+            }
+        }
+
+        private void LoadButtonPermissions()
+        {
+            var btnTemps = new Dictionary<string, string>
+            {
+                { "EmailingTest",SettingManagementPermissions.EmailingTest}
+            };
+
+            foreach (var btnTemp in btnTemps)
+            {
+                var isGranted = App.PermissionChecker(btnTemp.Value);
+                BtnPerms.TryAdd(btnTemp.Key, isGranted);
             }
         }
 

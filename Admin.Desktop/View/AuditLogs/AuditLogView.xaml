@@ -122,8 +122,7 @@
                         hc:IconElement.Geometry="{StaticResource SearchGeometry}"
                         Command="{Binding SearchCommand}"
                         Content="搜索"
-                        Style="{StaticResource ButtonPrimary}"
-                        Visibility="{Binding Buttons[Serach]}" />
+                        Style="{StaticResource ButtonPrimary}" />
                     <Button
                         hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}"
                         Command="{Binding ResetCommand}"

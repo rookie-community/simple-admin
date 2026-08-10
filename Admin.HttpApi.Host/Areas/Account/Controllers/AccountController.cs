@@ -1,9 +1,9 @@
-﻿using Asp.Versioning;
+﻿using System;
+using System.Threading.Tasks;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
-using System.Threading.Tasks;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.Account.Settings;
 using Volo.Abp.Account.Web.Areas.Account.Controllers.Models;

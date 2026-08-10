@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Polly;
-using System.Configuration;
 using Volo.Abp.Autofac;
 using Volo.Abp.Http.Client;
 using Volo.Abp.Modularity;
