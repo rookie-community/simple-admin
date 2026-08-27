@@ -1,7 +1,8 @@
+using Volo.Abp.Localization;
 using Volo.Abp.Localization.Resources.AbpLocalization;
 using Volo.Abp.Settings;
 
-namespace Volo.Abp.Localization;
+namespace Admin.Localization;
 
 public class LocalizationSettingProvider : SettingDefinitionProvider
 {

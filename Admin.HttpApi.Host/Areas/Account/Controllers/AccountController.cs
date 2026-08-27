@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Admin.Areas.Account.Models;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Volo.Abp;
+using Volo.Abp.Account;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.Account.Settings;
-using Volo.Abp.Account.Web.Areas.Account.Controllers.Models;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.AspNetCore;
@@ -14,9 +16,9 @@ using Volo.Abp.Settings;
 using Volo.Abp.Validation;
 using IdentityUser = Volo.Abp.Identity.IdentityUser;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
-using UserLoginInfo = Volo.Abp.Account.Web.Areas.Account.Controllers.Models.UserLoginInfo;
+using UserLoginInfo = Admin.Areas.Account.Models.UserLoginInfo;
 
-namespace Volo.Abp.Account.Web.Areas.Account.Controllers;
+namespace Admin.Areas.Account.Controllers;
 
 [RemoteService(Name = AccountRemoteServiceConsts.RemoteServiceName)]
 [Controller]
