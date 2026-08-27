@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
+using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.ViewModel.Reports;
+using FastReport.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Admin.Desktop.View.Reports
@@ -13,6 +15,7 @@ namespace Admin.Desktop.View.Reports
         private bool _isLoaded = false;
         public ReportDesign()
         {
+            Res.LoadLocale(LangProvider.Culture);
             InitializeComponent();
             vm = App.Current.Services.GetService<ReportDesignVM>()!;
             Loaded += async (s, e) =>

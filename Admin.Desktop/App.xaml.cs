@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Threading;
 using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.View.Accounts;
-using FastReport.Utils;
 using HandyControl.Tools;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
@@ -38,15 +37,17 @@ namespace Admin.Desktop
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
         /// </summary>
-        public IServiceProvider Services { get; private set; } = null!;
+        public IServiceProvider Services => _abpApplication?.ServiceProvider ?? throw new ArgumentNullException(nameof(IAbpApplicationWithInternalServiceProvider));
 
-        // Mutex全局唯一的名称，建议使用GUID或程序标识符
+        private IAbpApplicationWithInternalServiceProvider? _abpApplication;
+
+        /// <summary>
+        /// Mutex全局唯一的名称，建议使用GUID或程序标识符
+        /// </summary>
         private const string MutexName = "92D1DFAA-650A-40A4-A14F-ED85D6D2A5D5";
         private static Mutex _mutex = null!;
-        private readonly IHost _host;
-        private readonly IAbpApplicationWithExternalServiceProvider _application;
 
-        public App()
+        protected override async void OnStartup(StartupEventArgs e)
         {
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
@@ -58,36 +59,37 @@ namespace Admin.Desktop
                 .Enrich.FromLogContext()
                 .WriteTo.Async(c => c.File("Logs/logs.txt"))
                 .CreateLogger();
-
-            _host = CreateHostBuilder();
-            _application = _host.Services.GetService<IAbpApplicationWithExternalServiceProvider>() ?? throw new ArgumentNullException(nameof(IAbpApplicationWithExternalServiceProvider));
-        }
-
-        protected override async void OnStartup(StartupEventArgs e)
-        {
             try
             {
-                Log.Information("Starting WPF host.");
-                await _host.StartAsync();
-                Initialize(_host.Services);
-
+                //配置语言环境
                 var langName = ConfigurationManager.AppSettings["Language"]?.ToString() ?? CultureInfo.CurrentCulture.Name;
                 ConfigHelper.Instance.SetLang(langName);
                 ConfigHelper.Instance.SetWindowDefaultStyle();
                 ConfigHelper.Instance.SetNavigationWindowDefaultStyle();
                 LangProvider.Culture = new CultureInfo(langName);
-                Res.LoadLocale(LangProvider.Culture);
-                _host.Services.GetService<Login>()?.Show();
 
-                LiveCharts.Configure(cfg => cfg.AddSkiaSharp()
-                                               .AddDefaultMappers()
-                                               .AddDefaultTheme()
-                                            );
                 //调试环境下编译多语言环境
                 if (Debugger.IsAttached)
                 {
                     //LangProviderGenerator.Generator();
                 }
+
+                //配置主题
+                LiveCharts.Configure(cfg => cfg.AddSkiaSharp()
+                                               .AddDefaultMappers()
+                                               .AddDefaultTheme()
+                                            );
+
+                Log.Information("Starting WPF host.");
+                _abpApplication = await AbpApplicationFactory.CreateAsync<AdminDesktopModule>(options =>
+                {
+                    options.UseAutofac();
+                    options.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+                });
+
+                await _abpApplication.InitializeAsync();
+                var view = _abpApplication.Services.GetRequiredService<LoginView>() ?? throw new ArgumentNullException(nameof(LoginView));
+                view.Show();
             }
             catch (Exception ex)
             {
@@ -97,28 +99,11 @@ namespace Admin.Desktop
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            _application.Shutdown();
-            await _host.StopAsync();
-            _host.Dispose();
+            if (_abpApplication != null)
+            {
+                await _abpApplication.ShutdownAsync();
+            }
             Log.CloseAndFlush();
-        }
-
-        private void Initialize(IServiceProvider serviceProvider)
-        {
-            Services = serviceProvider;
-            _application.Initialize(serviceProvider);
-        }
-
-        private IHost CreateHostBuilder()
-        {
-            return Host
-                .CreateDefaultBuilder(null)
-                .UseAutofac()
-                .UseSerilog()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddApplication<AdminDesktopModule>();
-                }).Build();
         }
 
         internal static void SetCurrentUser(IdentityUserDto user) => CurrentUser = user;

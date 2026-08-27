@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.ViewModel.Reports;
+using FastReport.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Window = HandyControl.Controls.Window;
 
@@ -16,6 +18,7 @@ namespace Admin.Desktop.View.Reports
 
         public ReportPreview(string reportName)
         {
+            Res.LoadLocale(LangProvider.Culture);
             InitializeComponent();
             vm = App.Current.Services.GetService<ReportPreviewVM>()!;
             Loaded += async (s, e) =>

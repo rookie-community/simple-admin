@@ -13,7 +13,6 @@ using Admin.Desktop.View.Accounts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Duende.IdentityModel.Client;
-using FastReport.Utils;
 using HandyControl.Controls;
 using HandyControl.Tools;
 using Microsoft.Extensions.Logging;
@@ -57,7 +56,7 @@ namespace Admin.Desktop.ViewModel.Accounts
         [ObservableProperty]
         public partial bool IsUploading { get; set; }
 
-        public Login Owner { get; private set; } = null!;
+        public LoginView Owner { get; private set; } = null!;
 
         public LoginVM(IIdentityUserAppService userAppService, IHttpClientFactory httpClientFactory, ILogger<LoginVM> logger)
         {
@@ -66,7 +65,7 @@ namespace Admin.Desktop.ViewModel.Accounts
             _logger = logger;
         }
 
-        public void Initial(Login owner)
+        public void Initial(LoginView owner)
         {
             Owner = owner;
             if (Debugger.IsAttached)
@@ -173,7 +172,6 @@ namespace Admin.Desktop.ViewModel.Accounts
                 //更新语言
                 ConfigHelper.Instance.SetLang(value);
                 LangProvider.Culture = new CultureInfo(value);
-                Res.LoadLocale(LangProvider.Culture);
                 //更新配置文件
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings["Language"].Value = value;

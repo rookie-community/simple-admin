@@ -6,8 +6,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:langs="clr-namespace:Admin.Desktop.Resources.Langs"
     xmlns:local="clr-namespace:Admin.Desktop"
-    Startup="Application_Startup"
-    StartupUri="View/Accounts/Login.xaml">
+    Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

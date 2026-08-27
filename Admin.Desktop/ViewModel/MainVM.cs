@@ -24,6 +24,7 @@ using HandyControl.Data;
 using HandyControl.Tools;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Web.WebView2.Wpf;
 using Volo.Abp.DependencyInjection;
@@ -190,7 +191,6 @@ namespace Admin.Desktop.ViewModel
 
                 ConfigHelper.Instance.SetLang(langName);
                 LangProvider.Culture = new CultureInfo(langName);
-                Res.LoadLocale(LangProvider.Culture);
                 //更新配置文件
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config.AppSettings.Settings["Language"].Value = langName;
@@ -220,7 +220,7 @@ namespace Admin.Desktop.ViewModel
         [RelayCommand]
         private void Logout()
         {
-            var view = new Login();
+            var view = App.Current.Services.GetService<LoginView>() ?? throw new ArgumentNullException(nameof(LoginView));
             view.Show();
             NotifyIconVisibility = Visibility.Collapsed;
             Owner.Close();

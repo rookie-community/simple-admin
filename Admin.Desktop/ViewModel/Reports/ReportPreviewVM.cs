@@ -29,9 +29,9 @@ namespace Admin.Desktop.ViewModel.Reports
             var loadDialog = Dialog.Show<LoadingCircle>(DialogContainerToken);
             try
             {
+                Owner = owner;
                 await Task.Run(() =>
                 {
-                    Owner = owner;
                     Report.Load(reportName);
                     Report.PrepareAsync(Owner.previewControl);
                 });
