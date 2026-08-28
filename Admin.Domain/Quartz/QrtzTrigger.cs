@@ -23,7 +23,7 @@ namespace Admin.Quartz
         public bool IsEnabled { get; set; } = true;
         public string Description { get; set; } = null!;
 
-        public QrtzJob Job { get; set; }
+        public QrtzJob Job { get; set; } = null!;
 
         // 导航属性：子表，根据 TriggerType 关联不同的子表
         public QrtzCronTrigger CronTrigger { get; set; } = null!;

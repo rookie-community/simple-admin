@@ -1,3 +1,5 @@
+using System.Reflection;
+using Admin.Quartz;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -56,6 +58,20 @@ public class AdminDbContext :
 
     #endregion
 
+    #region Quartz
+
+    public DbSet<QrtzJob> QrtzJobs => Set<QrtzJob>();
+
+    public DbSet<QrtzTrigger> QrtzTriggers => Set<QrtzTrigger>();
+
+    public DbSet<QrtzCronTrigger> QrtzCronTriggers => Set<QrtzCronTrigger>();
+
+    public DbSet<QrtzSimpleTrigger> QrtzSimpleTriggers => Set<QrtzSimpleTrigger>();
+
+    public DbSet<QrtzSimPropTrigger> QrtzSimPropTriggers => Set<QrtzSimPropTrigger>();
+
+    #endregion
+
     public AdminDbContext(DbContextOptions<AdminDbContext> options)
         : base(options)
     {
@@ -77,6 +93,9 @@ public class AdminDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
+
+        //实体配置
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         /* Configure your own tables/entities inside here */
 

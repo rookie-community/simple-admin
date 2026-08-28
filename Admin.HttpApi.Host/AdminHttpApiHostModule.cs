@@ -4,6 +4,7 @@ using System.Linq;
 using Admin.EntityFrameworkCore;
 using Admin.HealthChecks;
 using Admin.MultiTenancy;
+using Admin.Quartzs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
+using Volo.Abp.Threading;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 
@@ -34,7 +36,6 @@ namespace Admin;
 
 [DependsOn(
     typeof(AdminHttpApiModule),
-    typeof(AdminQuartzModule),
     typeof(AbpAutofacModule),
     typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(AdminApplicationModule),
@@ -207,9 +208,12 @@ public class AdminHttpApiHostModule : AbpModule
         context.Services.AddAdminHealthChecks();
     }
 
-
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
+        //Quartz 初始化
+        var initializer = context.ServiceProvider.GetRequiredService<QuartzInitializer>();
+        AsyncHelper.RunSync(initializer.InitializeAsync);
+
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 

@@ -2,7 +2,7 @@
 using Admin.Quartz;
 using Quartz;
 
-namespace Admin
+namespace Admin.Utils
 {
     public static class QuartzConverter
     {
@@ -75,6 +75,14 @@ namespace Admin
                         .EndingDailyAt(TimeOfDay.HourMinuteAndSecondOfDay(endTime.Hours, endTime.Minutes, endTime.Seconds))
                         .OnDaysOfTheWeek(daysOfWeek!));
                     break;
+
+                // 注意：RecurrenceTrigger 需要 Quartz.NET 3.18+ 才支持
+                // ABP vNext 当前集成版本通常是 3.15，不支持
+                // 如需支持，请升级 Quartz 版本或改用 Cron 表达式
+                // case TriggerType.Recurrence:
+                //     var rec = triggerConfig.SimPropTrigger;
+                //     builder.WithRecurrenceSchedule(rec.StrProp1);
+                //     break;
 
                 default:
                     throw new NotSupportedException($"不支持的触发器类型: {triggerConfig.TriggerType}");

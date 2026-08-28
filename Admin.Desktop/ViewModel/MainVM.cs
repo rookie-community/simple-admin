@@ -92,7 +92,7 @@ namespace Admin.Desktop.ViewModel
                 UserName = App.CurrentUser?.UserName ?? string.Empty;
                 Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty;
 
-                var navs = await BuiderNavItems();
+                var navs = await BuiderNavItemsAsync();
                 NavItems = new ObservableCollection<NavDto>(navs);
                 var home = NavItems.FirstOrDefault(x => x.Type != NavType.Group);
                 if (home != null)
@@ -227,7 +227,7 @@ namespace Admin.Desktop.ViewModel
             Owner = null!;
         }
 
-        private async Task<List<NavDto>> BuiderNavItems()
+        private async Task<List<NavDto>> BuiderNavItemsAsync()
         {
             var allNavItems = NavProvider.GetNavConfigs();
             var permissions = new List<PermissionGrantInfoDto>();

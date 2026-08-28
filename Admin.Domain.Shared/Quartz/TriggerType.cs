@@ -23,6 +23,11 @@
         /// <summary>
         /// 每日时间间隔触发器（在指定时间段内按固定间隔）
         /// </summary>
-        DailyTimeInterval
+        DailyTimeInterval,
+
+        /// <summary>
+        /// 递归触发器（使用 RRULE 规则）
+        /// </summary>
+        Recurrence
     }
 }

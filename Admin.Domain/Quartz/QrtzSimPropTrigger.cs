@@ -4,10 +4,9 @@ using Volo.Abp.Domain.Entities.Auditing;
 namespace Admin.Quartz
 {
     /// <summary>
-    /// 通用属性触发器子表（复用表），对应 Quartz.NET 官方的 qrtz_simprop_triggers 表
-    /// 兼容：CalendarIntervalTrigger、DailyTimeIntervalTrigger
+    /// 通用属性触发器子表
     /// </summary>
-    /// <remarks>详细字段映射请参考：QrtzSimPropTrigger_Usage.md</remarks>
+    /// <remarks>兼容：CalendarIntervalTrigger、DailyTimeIntervalTrigger</remarks>
     public class QrtzSimPropTrigger : FullAuditedAggregateRoot<Guid>
     {
         /// <summary>

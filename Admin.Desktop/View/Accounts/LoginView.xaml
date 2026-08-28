@@ -49,7 +49,7 @@
                         FontSize="32"
                         FontWeight="Bold"
                         Style="{StaticResource TextBlockDefault}"
-                        Text="Admin Sample" />
+                        Text="Simple Admin" />
                 </hc:UniformSpacingPanel>
                 <hc:Shield
                     Margin="0,0,0,25"
@@ -103,7 +103,7 @@
                 Grid.Column="1"
                 FontSize="12"
                 Style="{StaticResource TextBlockDefaultSecLight}"
-                Text="Copyright © 2026 Admin Sample" />
+                Text="Copyright © 2026 Simple Admin" />
         </Grid>
     </hc:DialogContainer>
 </hc:Window>

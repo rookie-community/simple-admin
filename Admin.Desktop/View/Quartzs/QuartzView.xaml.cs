@@ -1,20 +1,20 @@
 ﻿using System.Windows.Controls;
-using Admin.Desktop.ViewModel.Users;
+using Admin.Desktop.ViewModel.Quartzs;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Admin.Desktop.View.Users
+namespace Admin.Desktop.View.Quartzs
 {
     /// <summary>
-    /// UserView.xaml 的交互逻辑
+    /// QuartzView.xaml 的交互逻辑
     /// </summary>
-    public partial class UserView : UserControl
+    public partial class QuartzView : UserControl
     {
-        private readonly UserVM vm;
+        private readonly QuartzVM vm;
         private bool _isLoaded;
-        public UserView()
+        public QuartzView()
         {
             InitializeComponent();
-            vm = App.Current.Services.GetService<UserVM>() ?? throw new ArgumentNullException(nameof(UserVM));
+            vm = App.Current.Services.GetService<QuartzVM>() ?? throw new ArgumentNullException(nameof(QuartzVM));
             Loaded += async (s, e) =>
             {
                 if (_isLoaded)

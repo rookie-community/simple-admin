@@ -13,10 +13,10 @@ namespace Admin.Desktop.View.Identity.Roles
         public RoleEditView(Guid roleId)
         {
             InitializeComponent();
-            vm = App.Current.Services.GetService<RoleEditVM>()!;
-            Loaded += (s, e) =>
+            vm = App.Current.Services.GetService<RoleEditVM>() ?? throw new ArgumentNullException(nameof(RoleEditVM));
+            Loaded += async (s, e) =>
             {
-                vm.InitialAsync(this, roleId);
+               await vm.InitialAsync(this, roleId);
             };
             DataContext = vm;
         }

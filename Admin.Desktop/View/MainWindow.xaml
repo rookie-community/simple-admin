@@ -262,7 +262,7 @@
         <hc:NotifyIcon
             x:Name="NotifyIconContextContent"
             IsBlink="{Binding NotifyIconBlink}"
-            Text="Admin Sample"
+            Text="Simple Admin"
             Token="{Binding NotifyIconToken}"
             Visibility="{Binding NotifyIconVisibility}">
             <hc:NotifyIcon.ContextMenu>
@@ -360,7 +360,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Bottom"
-                        Text="Copyright © 2026 Admin Sample" />
+                        Text="Copyright © 2026 Simple Admin" />
                     <hc:TabControl
                         IsAnimationEnabled="True"
                         IsDraggable="True"

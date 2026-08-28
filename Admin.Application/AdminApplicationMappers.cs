@@ -28,6 +28,11 @@ public partial class AdminApplicationMappers : MapperBase<AuditLog, AuditLogDto>
 [Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
 public partial class OrganizationUnitMappers : MapperBase<OrganizationUnit, OrganizationUnitDto>
 {
+    [MapperIgnoreTarget(nameof(OrganizationUnitDto.SortOrder))]
+    [MapperIgnoreTarget(nameof(OrganizationUnitDto.Children))]
     public override partial OrganizationUnitDto Map(OrganizationUnit source);
+
+    [MapperIgnoreTarget(nameof(OrganizationUnitDto.SortOrder))]
+    [MapperIgnoreTarget(nameof(OrganizationUnitDto.Children))]
     public override partial void Map(OrganizationUnit source, OrganizationUnitDto destination);
 }

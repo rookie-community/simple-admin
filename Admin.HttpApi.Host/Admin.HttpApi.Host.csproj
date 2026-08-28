@@ -33,7 +33,6 @@
 		<ProjectReference Include="..\Admin.Application\Admin.Application.csproj" />
 		<ProjectReference Include="..\Admin.HttpApi\Admin.HttpApi.csproj" />
 		<ProjectReference Include="..\Admin.EntityFrameworkCore\Admin.EntityFrameworkCore.csproj" />
-		<ProjectReference Include="..\Admin.Quartz\Admin.Quartz.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

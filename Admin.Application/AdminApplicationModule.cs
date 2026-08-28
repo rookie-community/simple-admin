@@ -11,6 +11,7 @@ namespace Admin;
 [DependsOn(
     typeof(AdminDomainModule),
     typeof(AdminApplicationContractsModule),
+    typeof(AdminQuartzModule),
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
     typeof(AbpIdentityApplicationModule),

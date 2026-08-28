@@ -1,23 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <RootNamespace>Admin</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Admin</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
-    <ProjectReference Include="..\Admin.Application.Contracts\Admin.Application.Contracts.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
+		<ProjectReference Include="..\Admin.Application.Contracts\Admin.Application.Contracts.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="10.6.0" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="10.6.0" />
-    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="10.6.0" />
-    <PackageReference Include="Volo.Abp.Account.Application" Version="10.6.0" />
-    <PackageReference Include="Volo.Abp.Identity.Application" Version="10.6.0" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="10.6.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.SettingManagement.Application" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.Account.Application" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.Identity.Application" Version="10.6.0" />
+		<PackageReference Include="Volo.Abp.TenantManagement.Application" Version="10.6.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Admin.Quartz\Admin.Quartz.csproj" />
+	</ItemGroup>
 </Project>
