@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using Admin.Desktop.ViewModel.Identity.Roles;
+﻿using Admin.Desktop.ViewModel.Identity.Roles;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Admin.Desktop.View.Identity.Roles
 {
@@ -16,7 +16,7 @@ namespace Admin.Desktop.View.Identity.Roles
             vm = App.Current.Services.GetService<RoleEditVM>() ?? throw new ArgumentNullException(nameof(RoleEditVM));
             Loaded += async (s, e) =>
             {
-               await vm.InitialAsync(this, roleId);
+                await vm.InitialAsync(this, roleId);
             };
             DataContext = vm;
         }

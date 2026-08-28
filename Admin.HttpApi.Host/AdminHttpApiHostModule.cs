@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
 using Admin.EntityFrameworkCore;
 using Admin.HealthChecks;
 using Admin.MultiTenancy;
@@ -16,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi;
 using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
+using System;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
@@ -211,8 +211,8 @@ public class AdminHttpApiHostModule : AbpModule
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
         //Quartz 初始化
-        var initializer = context.ServiceProvider.GetRequiredService<QuartzInitializer>();
-        AsyncHelper.RunSync(initializer.InitializeAsync);
+        //var initializer = context.ServiceProvider.GetRequiredService<QuartzInitializer>();
+        //AsyncHelper.RunSync(initializer.InitializeAsync);
 
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();

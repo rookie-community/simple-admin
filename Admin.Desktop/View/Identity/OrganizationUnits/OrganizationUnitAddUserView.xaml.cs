@@ -1,6 +1,6 @@
-using System.Windows;
 using Admin.Desktop.ViewModel.Identity.OrganizationUnits;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Admin.Desktop.View.Identity.OrganizationUnits
 {

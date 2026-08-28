@@ -17,7 +17,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="6*" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
@@ -43,9 +43,9 @@
                         Spacing="5">
                         <hc:TextBox
                             MinWidth="200"
-                            hc:InfoElement.Placeholder="请输入用户名"
+                            hc:InfoElement.Placeholder="请输入名称"
                             hc:InfoElement.ShowClearButton="True"
-                            hc:InfoElement.Title="用户名"
+                            hc:InfoElement.Title="名称"
                             hc:InfoElement.TitlePlacement="Left"
                             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -148,8 +148,31 @@
 
         <GridSplitter
             Grid.Row="1"
-            Margin="0,1"
-            VerticalAlignment="Stretch" />
+            Height="5"
+            Margin="0,2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            ResizeBehavior="PreviousAndNext"
+            ResizeDirection="Rows">
+            <GridSplitter.Template>
+                <ControlTemplate TargetType="GridSplitter">
+                    <Grid x:Name="PART_Grip">
+                        <Rectangle Fill="{DynamicResource RegionBrush}" />
+                        <!--  视觉细线条，垂直居中；修改Height调整粗细  -->
+                        <Rectangle
+                            x:Name="VisualLine"
+                            Height="2"
+                            VerticalAlignment="Center"
+                            Fill="{DynamicResource RegionBrush}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="VisualLine" Property="Fill" Value="{DynamicResource PrimaryBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </GridSplitter.Template>
+        </GridSplitter>
 
         <TabControl Grid.Row="2">
             <TabItem Header="触发器">

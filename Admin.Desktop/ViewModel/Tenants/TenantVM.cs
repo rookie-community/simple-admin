@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using Admin.Desktop.View.Tenants;
+﻿using Admin.Desktop.View.Tenants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
+using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Validation;

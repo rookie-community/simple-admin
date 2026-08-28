@@ -125,7 +125,7 @@ namespace Admin.Desktop.Tools
                     new NavDto
                     {
                         Icon = "\xf017",
-                        Name = "定时器",
+                        Name = "定时任务",
                         Type = NavType.UserControl,
                         PermissionName = QuartzPermissions.Jobs.Default,
                         Content = typeof(QuartzView).FullName,

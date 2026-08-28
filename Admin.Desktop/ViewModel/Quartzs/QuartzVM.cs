@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-using System.Windows;
-using Admin.Desktop.View.Identity.Users;
-using Admin.Desktop.View.Quartzs;
+﻿using Admin.Desktop.View.Quartzs;
 using Admin.Permissions;
 using Admin.Quartzs;
+using Admin.Quartzs.Dtos;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Identity;
 using Volo.Abp.Validation;
@@ -56,12 +56,26 @@ namespace Admin.Desktop.ViewModel.Quartzs
 
         public QuartzView Owner { get; private set; } = null!;
 
-        private readonly IQuartzAppService _quartzAppService;
+        private readonly IQuartzJobAppService _quartzJobAppService;
+        private readonly IQuartzTriggerAppService _quartzTriggerAppService;
+        private readonly IQuartzCronTriggerAppService _quartzCronTriggerAppService;
+        private readonly IQuartzSimpleTriggerAppService _quartzSimpleTriggerAppService;
+        private readonly IQuartzSimPropTriggerAppService _quartzSimPropTriggerAppService;
         private readonly ILogger<QuartzVM> _logger;
 
-        public QuartzVM(IQuartzAppService quartzAppService, ILogger<QuartzVM> logger)
+        public QuartzVM(
+            IQuartzJobAppService quartzAppService,
+            IQuartzTriggerAppService quartzTriggerAppService,
+            IQuartzCronTriggerAppService quartzCronTriggerAppService,
+            IQuartzSimpleTriggerAppService quartzSimpleTriggerAppService,
+            IQuartzSimPropTriggerAppService quartzSimPropTriggerAppService,
+            ILogger<QuartzVM> logger)
         {
-            _quartzAppService = quartzAppService;
+            _quartzJobAppService = quartzAppService;
+            _quartzTriggerAppService = quartzTriggerAppService;
+            _quartzCronTriggerAppService = quartzCronTriggerAppService;
+            _quartzSimpleTriggerAppService = quartzSimpleTriggerAppService;
+            _quartzSimPropTriggerAppService = quartzSimPropTriggerAppService;
             _logger = logger;
             LoadButtonPermissions();
         }
@@ -140,7 +154,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         {
             try
             {
-                var view = new UserAddView();
+                var view = new QuartzJobAddView();
                 var result = view.ShowDialog();
                 if (result == true)
                 {
@@ -160,7 +174,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         {
             try
             {
-                var view = new UserEditView(user.Id);
+                var view = new QuartzJobEditView(user.Id);
                 var result = view.ShowDialog();
                 if (result == true)
                 {
@@ -176,7 +190,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         }
 
         [RelayCommand]
-        private async Task DeleteJob(IdentityUserDto user)
+        private async Task DeleteJob(QrtzJobDto qrtzJob)
         {
             Dialog? loadDialog = null;
             try
@@ -187,7 +201,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
                     return;
                 }
                 loadDialog = Dialog.Show<LoadingCircle>();
-                //await _identityUserAppService.DeleteAsync(user.Id);
+                await _quartzJobAppService.DeleteAsync(qrtzJob.Id);
                 await SearchCommand.ExecuteAsync(null);
             }
             catch (Exception ex)
@@ -207,8 +221,8 @@ namespace Admin.Desktop.ViewModel.Quartzs
             Dialog? loadDialog = null;
             try
             {
-                var userIds = sender.Cast<IdentityUserDto>().Select(x => x.Id).ToList();
-                if (userIds.Count == 0)
+                var qrtzJobIds  = sender.Cast<QrtzJobDto>().Select(x => x.Id).ToList();
+                if (qrtzJobIds.Count == 0)
                 {
                     MessageBox.Warning("未选中任何数据！");
                     return;
@@ -219,9 +233,9 @@ namespace Admin.Desktop.ViewModel.Quartzs
                     return;
                 }
                 loadDialog = Dialog.Show<LoadingCircle>();
-                foreach (var userId in userIds)
+                foreach (var qrtzJobId in qrtzJobIds)
                 {
-                    //await _identityUserAppService.DeleteAsync(userId);
+                    await _quartzJobAppService.DeleteAsync(qrtzJobId);
                 }
                 await SearchCommand.ExecuteAsync(null);
             }
@@ -244,14 +258,14 @@ namespace Admin.Desktop.ViewModel.Quartzs
 
         private async Task LoadMainDataAsync()
         {
-            //var result = await _identityUserAppService.GetListAsync(new GetIdentityUsersInput
-            //{
-            //    Filter = Name,
-            //    SkipCount = (MainPageIndex - 1) * MainDataCountPerPage,
-            //    MaxResultCount = MainDataCountPerPage
-            //});
-            //MainTotalCount = result.TotalCount;
-            //QrtzJobs = new ObservableCollection<QrtzJobDto>(result.Items);
+            var result = await _quartzJobAppService.GetListAsync(new Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto
+            {
+                //filter = name,
+                SkipCount = (MainPageIndex - 1) * MainDataCountPerPage,
+                MaxResultCount = MainDataCountPerPage
+            });
+            MainTotalCount = result.TotalCount;
+            QrtzJobs = new ObservableCollection<QrtzJobDto>(result.Items);
         }
 
         [RelayCommand]
@@ -259,7 +273,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         {
             try
             {
-                var view = new UserAddView();
+                var view = new QuartzTriggerAddView();
                 var result = view.ShowDialog();
                 if (result == true)
                 {
@@ -279,7 +293,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         {
             try
             {
-                var view = new UserEditView(user.Id);
+                var view = new QuartzTriggerEditView(user.Id);
                 var result = view.ShowDialog();
                 if (result == true)
                 {
@@ -301,7 +315,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
         }
 
         [RelayCommand]
-        private async Task DeleteTrigger(IdentityUserDto user)
+        private async Task DeleteTrigger(QrtzTriggerDto qrtzTrigger)
         {
             Dialog? loadDialog = null;
             try
@@ -312,7 +326,7 @@ namespace Admin.Desktop.ViewModel.Quartzs
                     return;
                 }
                 loadDialog = Dialog.Show<LoadingCircle>();
-                //await _identityUserAppService.DeleteAsync(user.Id);
+                await _quartzTriggerAppService.DeleteAsync(qrtzTrigger.Id);
                 await SearchCommand.ExecuteAsync(null);
             }
             catch (Exception ex)
@@ -332,8 +346,8 @@ namespace Admin.Desktop.ViewModel.Quartzs
             Dialog? loadDialog = null;
             try
             {
-                var userIds = sender.Cast<IdentityUserDto>().Select(x => x.Id).ToList();
-                if (userIds.Count == 0)
+                var qrtzTriggerIds = sender.Cast<QrtzTriggerDto>().Select(x => x.Id).ToList();
+                if (qrtzTriggerIds.Count == 0)
                 {
                     MessageBox.Warning("未选中任何数据！");
                     return;
@@ -344,9 +358,9 @@ namespace Admin.Desktop.ViewModel.Quartzs
                     return;
                 }
                 loadDialog = Dialog.Show<LoadingCircle>();
-                foreach (var userId in userIds)
+                foreach (var qrtzTriggerId in qrtzTriggerIds)
                 {
-                    //await _identityUserAppService.DeleteAsync(userId);
+                    await _quartzTriggerAppService.DeleteAsync(qrtzTriggerId);
                 }
                 await SearchCommand.ExecuteAsync(null);
             }
@@ -361,16 +375,16 @@ namespace Admin.Desktop.ViewModel.Quartzs
             }
         }
 
-        private async Task LoadDetailDataAsync() 
+        private async Task LoadDetailDataAsync()
         {
-            //var result = await _identityUserAppService.GetListAsync(new GetIdentityUsersInput
-            //{
-            //    Filter = Name,
-            //    SkipCount = (PageIndex - 1) * DataCountPerPage,
-            //    MaxResultCount = DataCountPerPage
-            //});
-            //DetailTotalCount = result.TotalCount;
-            //QrtzTriggers = new ObservableCollection<QrtzTriggerDto>(result.Items);
+            var result = await _quartzTriggerAppService.GetListAsync(new Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto
+            {
+                //Filter = Name,
+                SkipCount = (DetailPageIndex - 1) * DetailDataCountPerPage,
+                MaxResultCount = DetailDataCountPerPage
+            });
+            DetailTotalCount = result.TotalCount;
+            QrtzTriggers = new ObservableCollection<QrtzTriggerDto>(result.Items);
         }
     }
 }

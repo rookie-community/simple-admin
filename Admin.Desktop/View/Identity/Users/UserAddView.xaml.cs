@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using Admin.Desktop.ViewModel.Identity.Users;
+﻿using Admin.Desktop.ViewModel.Identity.Users;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Admin.Desktop.View.Identity.Users
 {

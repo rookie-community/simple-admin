@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Admin.Data;
+﻿using Admin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
 namespace Admin.EntityFrameworkCore;

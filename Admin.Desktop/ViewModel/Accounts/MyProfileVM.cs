@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Admin.Desktop.View.Accounts;
+﻿using Admin.Desktop.View.Accounts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Account;
 using Volo.Abp.DependencyInjection;
 

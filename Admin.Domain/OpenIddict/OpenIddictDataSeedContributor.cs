@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using OpenIddict.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using OpenIddict.Abstractions;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.OpenIddict;
@@ -63,7 +63,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
         var appClientId = configurationSection["Admin_App:ClientId"];
         if (!appClientId.IsNullOrWhiteSpace())
         {
-            var appClientRootUrl = configurationSection["Admin_App:RootUrl"]?.TrimEnd('/');
+            var appClientRootUrl = configurationSection["Admin_App:RootUrl"]?.TrimEnd('/') ?? string.Empty;
             await CreateOrUpdateApplicationAsync(
                 applicationType: OpenIddictConstants.ApplicationTypes.Web,
                 name: appClientId!,
@@ -87,12 +87,6 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
             );
         }
 
-
-
-
-
-
-
         // Swagger Client
         var swaggerClientId = configurationSection["Admin_Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
@@ -109,7 +103,7 @@ public class OpenIddictDataSeedContributor : OpenIddictDataSeedContributorBase, 
                 grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
                 scopes: commonScopes,
                 redirectUris: new List<string> { $"{swaggerRootUrl}/swagger/oauth2-redirect.html" },
-                clientUri: swaggerRootUrl.EnsureEndsWith('/') + "swagger",
+                clientUri: swaggerRootUrl?.EnsureEndsWith('/') + "swagger",
                 logoUri: "/images/clients/swagger.svg"
             );
         }

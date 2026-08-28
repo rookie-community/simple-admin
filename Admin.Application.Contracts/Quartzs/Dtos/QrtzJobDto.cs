@@ -1,7 +1,7 @@
 ﻿using System;
 using Volo.Abp.Application.Dtos;
 
-namespace Admin.Quartzs
+namespace Admin.Quartzs.Dtos
 {
     public class QrtzJobDto : EntityDto<Guid>
     {
@@ -14,6 +14,6 @@ namespace Admin.Quartzs
 
         public DateTime CreationTime { get; set; }
 
-        public DateTime LastModificationTime { get; set; }
+        public DateTime? LastModificationTime { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-using System.Reflection;
 using Admin.Quartz;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;

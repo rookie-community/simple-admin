@@ -5,11 +5,6 @@
 ## 项目简介
 `Simple Admin` 是一个基于ABP vNext的通用权限管理框架，包含WPF与Web的简单示例。
 
-## 主要特性
-- 基于 WPF 的桌面 UI（MVVM 模式）
-- 模块化的视图与视图模型组织
-- 基于ABP vNext
-
 ## 目录结构
 
 ```
@@ -19,14 +14,15 @@ Simple Admin/
 ├── Admin.DbMigrator/            # 数据迁移工具
 ├── Admin.Desktop/               # 基于HandyControl的WPF客户端，接口服务由Host提供
 ├── Admin.Domain/                # 实体、领域规则
-├── Admin.Domain.Shared/         # 权限码、枚举等共享常量
+├── Admin.Domain.Shared/         # 枚举等共享常量
 ├── Admin.EntityFrameworkCore/   # DbContext、Migrations
 ├── Admin.MongoDB/               # MongoDB
 ├── Admin.HttpApi.Host/          # Api 接口服务
 ├── Admin.HttpApi/               # Controller、Filter
 ├── Admin.HttpApi.Client/        # Http Proxy
-├── Admin.Quartz/                # Quartz定时器、BackgroudJobs
-└── Admin.Web/                   # 基于Layui的Web 版本
+├── Admin.Quartz/                # Quartz定时器、BackgroudJobs、BackgroundWorkers
+├── Admin.Test/                  # 单元测试
+└── Admin.Web/                   # 基于Layui的Web版本
 ```
 
 ## 贡献

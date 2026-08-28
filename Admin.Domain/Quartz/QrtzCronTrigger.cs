@@ -18,7 +18,7 @@ namespace Admin.Quartz
         /// <summary>
         /// 可选，默认 UTC
         /// </summary>
-        public string TimeZoneId { get; set; } = null!; 
+        public string TimeZoneId { get; set; } = null!;
 
         public QrtzTrigger Trigger { get; set; } = null!;
     }

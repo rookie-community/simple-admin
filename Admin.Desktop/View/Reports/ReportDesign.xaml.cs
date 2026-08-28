@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
-using Admin.Desktop.Resources.Langs;
+﻿using Admin.Desktop.Resources.Langs;
 using Admin.Desktop.ViewModel.Reports;
 using FastReport.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Controls;
 
 namespace Admin.Desktop.View.Reports
 {

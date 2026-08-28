@@ -1,18 +1,24 @@
-﻿using System;
-using Admin.Quartz;
+﻿using Admin.Quartz;
+using System;
+using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Application.Dtos;
 
-namespace Admin.Quartzs
+namespace Admin.Quartzs.Dtos
 {
-    public class QrtzTriggerDto : EntityDto<Guid>
+    public class CreateUpdateQrtzTriggerDto : EntityDto
     {
+        [Required]
+        [MaxLength(100)]
         public string TriggerName { get; set; } = null!;
+
+        [Required]
+        [MaxLength(100)]
         public string TriggerGroup { get; set; } = null!;
+
+        [Required]
         public Guid JobId { get; set; }
 
-        /// <summary>
-        /// 触发器类型（枚举）
-        /// </summary>
+        [Required]
         public TriggerType TriggerType { get; set; }
 
         public int Priority { get; set; } = 5;

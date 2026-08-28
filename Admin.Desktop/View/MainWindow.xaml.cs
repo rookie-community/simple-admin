@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-using Admin.Desktop.Tools;
+﻿using Admin.Desktop.Tools;
 using Admin.Desktop.ViewModel;
 using HandyControl.Controls;
 using HandyControl.Data;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
+using System.Windows.Controls;
 using TabItem = HandyControl.Controls.TabItem;
 using Window = HandyControl.Controls.Window;
 

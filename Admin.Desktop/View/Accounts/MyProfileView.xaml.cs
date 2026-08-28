@@ -1,6 +1,6 @@
-﻿using System.Windows.Controls;
-using Admin.Desktop.ViewModel.Accounts;
+﻿using Admin.Desktop.ViewModel.Accounts;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Controls;
 
 namespace Admin.Desktop.View.Accounts
 {

@@ -1,9 +1,9 @@
-﻿using System.Windows;
-using Admin.Desktop.View.SettingManagement.EmailSettings;
+﻿using Admin.Desktop.View.SettingManagement.EmailSettings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
 using Microsoft.Extensions.Logging;
+using System.Windows;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.SettingManagement;
 using MessageBox = HandyControl.Controls.MessageBox;

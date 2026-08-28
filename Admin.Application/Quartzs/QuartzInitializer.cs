@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Admin.Quartz;
+﻿using Admin.Quartz;
 using Admin.Utils;
-using System.Linq;
 using Quartz;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 

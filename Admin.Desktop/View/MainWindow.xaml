@@ -316,6 +316,7 @@
                 <TreeView
                     x:Name="NavigationView"
                     Grid.Column="0"
+                    Background="{DynamicResource RegionBrush}"
                     ItemsSource="{Binding NavItems}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectedItemChanged">
@@ -339,16 +340,18 @@
                     Grid.Column="1"
                     Margin="1,0"
                     HorizontalAlignment="Stretch">
-                    <GridSplitter.Template>
-                        <ControlTemplate TargetType="GridSplitter">
-                            <Border x:Name="PART_Border" Background="{DynamicResource DefaultBrush}" />
-                            <ControlTemplate.Triggers>
+                    <GridSplitter.Style>
+                        <Style TargetType="GridSplitter">
+                            <!--  默认  -->
+                            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+                            <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="PART_Border" Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                    <!--  鼠标悬停显示颜色  -->
+                                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
                                 </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </GridSplitter.Template>
+                            </Style.Triggers>
+                        </Style>
+                    </GridSplitter.Style>
                 </GridSplitter>
                 <DockPanel
                     Grid.Column="2"

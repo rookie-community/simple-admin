@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using Admin.Desktop.ViewModel.Permissions;
+﻿using Admin.Desktop.ViewModel.Permissions;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 
 namespace Admin.Desktop.View.Permissions
 {

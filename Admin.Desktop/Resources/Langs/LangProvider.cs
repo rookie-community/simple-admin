@@ -1,8 +1,8 @@
+using HandyControl.Tools;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using HandyControl.Tools;
 
 namespace Admin.Desktop.Resources.Langs
 {
