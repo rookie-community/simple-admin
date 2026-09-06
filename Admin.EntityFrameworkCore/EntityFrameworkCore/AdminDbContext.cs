@@ -1,4 +1,3 @@
-using Admin.Quartz;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -55,20 +54,6 @@ public class AdminDbContext :
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
-
-    #endregion
-
-    #region Quartz
-
-    public DbSet<QrtzJob> QrtzJobs => Set<QrtzJob>();
-
-    public DbSet<QrtzTrigger> QrtzTriggers => Set<QrtzTrigger>();
-
-    public DbSet<QrtzCronTrigger> QrtzCronTriggers => Set<QrtzCronTrigger>();
-
-    public DbSet<QrtzSimpleTrigger> QrtzSimpleTriggers => Set<QrtzSimpleTrigger>();
-
-    public DbSet<QrtzSimPropTrigger> QrtzSimPropTriggers => Set<QrtzSimPropTrigger>();
 
     #endregion
 

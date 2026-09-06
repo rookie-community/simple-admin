@@ -532,33 +532,6 @@ namespace Admin.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QrtzJobs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    JobGroup = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    JobClassName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IsDisallowConcurrent = table.Column<bool>(type: "bit", nullable: false),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QrtzJobs", x => x.Id);
-                },
-                comment: "Quartz Jobs");
-
-            migrationBuilder.CreateTable(
                 name: "AbpAuditLogActions",
                 columns: table => new
                 {
@@ -879,40 +852,6 @@ namespace Admin.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QrtzTriggers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TriggerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TriggerGroup = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    JobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TriggerType = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Priority = table.Column<int>(type: "int", nullable: false, defaultValue: 5),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QrtzTriggers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QrtzTriggers_QrtzJobs_JobId",
-                        column: x => x.JobId,
-                        principalTable: "QrtzJobs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "Quartz QrtzTriggers");
-
-            migrationBuilder.CreateTable(
                 name: "AbpEntityPropertyChanges",
                 columns: table => new
                 {
@@ -968,105 +907,6 @@ namespace Admin.Migrations
                         principalTable: "OpenIddictAuthorizations",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateTable(
-                name: "QrtzCronTriggers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TriggerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CronExpression = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    TimeZoneId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QrtzCronTriggers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QrtzCronTriggers_QrtzTriggers_TriggerId",
-                        column: x => x.TriggerId,
-                        principalTable: "QrtzTriggers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "Quartz QrtzCronTriggers");
-
-            migrationBuilder.CreateTable(
-                name: "QrtzSimpleTriggers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TriggerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RepeatCount = table.Column<int>(type: "int", nullable: false),
-                    IntervalSeconds = table.Column<int>(type: "int", nullable: false),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QrtzSimpleTriggers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QrtzSimpleTriggers_QrtzTriggers_TriggerId",
-                        column: x => x.TriggerId,
-                        principalTable: "QrtzTriggers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "Quartz QrtzSimpleTriggers");
-
-            migrationBuilder.CreateTable(
-                name: "QrtzSimPropTriggers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TriggerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StrProp1 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    StrProp2 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    StrProp3 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IntProp1 = table.Column<int>(type: "int", nullable: true),
-                    IntProp2 = table.Column<int>(type: "int", nullable: true),
-                    LongProp1 = table.Column<long>(type: "bigint", nullable: true),
-                    LongProp2 = table.Column<long>(type: "bigint", nullable: true),
-                    DecProp1 = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: true),
-                    DecProp2 = table.Column<decimal>(type: "decimal(18,6)", precision: 18, scale: 6, nullable: true),
-                    BoolProp1 = table.Column<bool>(type: "bit", nullable: true),
-                    BoolProp2 = table.Column<bool>(type: "bit", nullable: true),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QrtzSimPropTriggers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QrtzSimPropTriggers_QrtzTriggers_TriggerId",
-                        column: x => x.TriggerId,
-                        principalTable: "QrtzTriggers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                },
-                comment: "Quartz QrtzSimPropTriggers");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AbpAuditLogActions_AuditLogId",
@@ -1343,41 +1183,6 @@ namespace Admin.Migrations
                 name: "IX_OpenIddictTokens_ReferenceId",
                 table: "OpenIddictTokens",
                 column: "ReferenceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzCronTriggers_TriggerId",
-                table: "QrtzCronTriggers",
-                column: "TriggerId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzJobs_JobName_JobGroup",
-                table: "QrtzJobs",
-                columns: new[] { "JobName", "JobGroup" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzSimpleTriggers_TriggerId",
-                table: "QrtzSimpleTriggers",
-                column: "TriggerId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzSimPropTriggers_TriggerId",
-                table: "QrtzSimPropTriggers",
-                column: "TriggerId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzTriggers_JobId",
-                table: "QrtzTriggers",
-                column: "JobId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QrtzTriggers_TriggerName_TriggerGroup",
-                table: "QrtzTriggers",
-                columns: new[] { "TriggerName", "TriggerGroup" },
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -1477,15 +1282,6 @@ namespace Admin.Migrations
                 name: "OpenIddictTokens");
 
             migrationBuilder.DropTable(
-                name: "QrtzCronTriggers");
-
-            migrationBuilder.DropTable(
-                name: "QrtzSimpleTriggers");
-
-            migrationBuilder.DropTable(
-                name: "QrtzSimPropTriggers");
-
-            migrationBuilder.DropTable(
                 name: "AbpBlobContainers");
 
             migrationBuilder.DropTable(
@@ -1507,16 +1303,10 @@ namespace Admin.Migrations
                 name: "OpenIddictAuthorizations");
 
             migrationBuilder.DropTable(
-                name: "QrtzTriggers");
-
-            migrationBuilder.DropTable(
                 name: "AbpAuditLogs");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictApplications");
-
-            migrationBuilder.DropTable(
-                name: "QrtzJobs");
         }
     }
 }

@@ -52,9 +52,6 @@ namespace Admin.Desktop.ViewModel.Identity.OrganizationUnits
         [ObservableProperty]
         public partial string DialogContainerToken { get; set; } = Guid.NewGuid().ToString();
 
-        [ObservableProperty]
-        public partial Dictionary<string, Visibility> BtnPerms { get; set; } = new Dictionary<string, Visibility>();
-
         public OrganizationUnitView Owner { get; private set; } = null!;
 
         public OrganizationUnitVM(IOrganizationUnitAppService organizationUnitAppService, ILogger<OrganizationUnitVM> logger)

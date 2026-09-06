@@ -28,13 +28,23 @@ namespace Admin.Permissions
                 // 字典缓存：Name → 节点，快速查找父节点
                 var nodeDict = allPermissionNodes.ToDictionary(x => x.Name);
 
-                // 2. 先把所有子节点挂载到父节点Children
+                // 2. 先把所有子节点挂载到父节点Children，并记录父引用（供级联回溯）
                 foreach (var node in allPermissionNodes)
                 {
                     // 存在父权限，挂载到父节点
                     if (!string.IsNullOrEmpty(node.ParentName) && nodeDict.TryGetValue(node.ParentName, out PermissionTreeDto? parentNode))
                     {
                         parentNode.Children.Add(node);
+                        node.Parent = parentNode;
+                    }
+                }
+
+                // 2.1 归一化父授权：兼容历史上“子权限已授权但父权限未授权”的数据，加载后自动补选父链
+                foreach (var node in allPermissionNodes)
+                {
+                    if (node.IsGranted)
+                    {
+                        node.EnsureAncestorsGranted();
                     }
                 }
 

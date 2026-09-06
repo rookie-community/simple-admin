@@ -1,7 +1,6 @@
 ﻿using Admin.Localization;
 using Admin.MongoDB;
 using Admin.MultiTenancy;
-using Admin.Quartzs;
 using Admin.Web.HealthChecks;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -197,10 +196,6 @@ namespace Admin.Web
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
-            //Quartz 初始化
-            var initializer = context.ServiceProvider.GetRequiredService<QuartzInitializer>();
-            AsyncHelper.RunSync(initializer.InitializeAsync);
-
             var app = context.GetApplicationBuilder();
             var env = context.GetEnvironment();
 

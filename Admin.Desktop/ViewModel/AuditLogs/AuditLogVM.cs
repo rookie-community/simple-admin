@@ -1,4 +1,5 @@
 ﻿using Admin.AuditLogs;
+using Admin.Desktop.Tools;
 using Admin.Desktop.View.AuditLogs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -77,7 +78,7 @@ namespace Admin.Desktop.ViewModel.AuditLogs
         {
             _auditLogAppService = auditLogAppService;
             _logger = logger;
-            LoadButtonPermissions();
+            BtnPerms = ButtonPermissionBuilder.Build(BtnPermissionMap);
         }
 
         internal async Task InitialAsync(AuditLogView owner)
@@ -115,20 +116,16 @@ namespace Admin.Desktop.ViewModel.AuditLogs
             }
         }
 
-        private void LoadButtonPermissions()
+        /// <summary>
+        /// 页面按钮键名 -> 权限编码 的映射。
+        /// 键名需与 AuditLogView 中 Visibility="{Binding BtnPerms[键名]}" 的绑定一致。
+        /// 权限编码为空表示暂未绑定权限，按钮默认可见。
+        /// </summary>
+        private static readonly Dictionary<string, string> BtnPermissionMap = new()
         {
-            var btnTemps = new Dictionary<string, string>
-            {
-                { "Export",string.Empty},
-                { "Detail",string.Empty },
-            };
-
-            foreach (var btnTemp in btnTemps)
-            {
-                var isGranted = App.PermissionChecker(btnTemp.Value);
-                BtnPerms.TryAdd(btnTemp.Key, isGranted);
-            }
-        }
+            { "Export", string.Empty },
+            { "Detail", string.Empty },
+        };
 
         [RelayCommand]
         private async Task SearchAsync()

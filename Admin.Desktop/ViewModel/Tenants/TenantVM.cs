@@ -1,4 +1,5 @@
-﻿using Admin.Desktop.View.Tenants;
+﻿using Admin.Desktop.Tools;
+using Admin.Desktop.View.Tenants;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
@@ -44,7 +45,7 @@ namespace Admin.Desktop.ViewModel.Tenants
         {
             _tenantAppService = tenantAppService;
             _logger = logger;
-            LoadButtonPermissions();
+            BtnPerms = ButtonPermissionBuilder.Build(BtnPermissionMap);
         }
 
         internal async Task InitialAsync(TenantView owner)
@@ -53,22 +54,17 @@ namespace Admin.Desktop.ViewModel.Tenants
             await SearchCommand.ExecuteAsync(null);
         }
 
-        private void LoadButtonPermissions()
+        /// <summary>
+        /// 页面按钮键名 -> 权限编码 的映射。
+        /// 键名需与 TenantView 中 Visibility="{Binding BtnPerms[键名]}" 的绑定一致。
+        /// </summary>
+        private static readonly Dictionary<string, string> BtnPermissionMap = new()
         {
-            var btnTemps = new Dictionary<string, string>
-            {
-                { "Create",TenantManagementPermissions.Tenants.Create},
-                { "Update",TenantManagementPermissions.Tenants.Update },
-                { "ManageFeatures", TenantManagementPermissions.Tenants.ManageFeatures },
-                { "Delete", TenantManagementPermissions.Tenants.Delete },
-            };
-
-            foreach (var btnTemp in btnTemps)
-            {
-                var isGranted = App.PermissionChecker(btnTemp.Value);
-                BtnPerms.TryAdd(btnTemp.Key, isGranted);
-            }
-        }
+            { "Create", TenantManagementPermissions.Tenants.Create },
+            { "Update", TenantManagementPermissions.Tenants.Update },
+            { "ManageFeatures", TenantManagementPermissions.Tenants.ManageFeatures },
+            { "Delete", TenantManagementPermissions.Tenants.Delete },
+        };
 
         [RelayCommand]
         private async Task SearchAsync()

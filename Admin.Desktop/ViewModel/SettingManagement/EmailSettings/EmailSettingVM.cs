@@ -1,4 +1,5 @@
-﻿using Admin.Desktop.View.SettingManagement.EmailSettings;
+﻿using Admin.Desktop.Tools;
+using Admin.Desktop.View.SettingManagement.EmailSettings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HandyControl.Controls;
@@ -30,7 +31,7 @@ namespace Admin.Desktop.ViewModel.SettingManagement.EmailSettings
         {
             _emailSettingsAppService = emailSettingsAppService;
             _logger = logger;
-            LoadButtonPermissions();
+            BtnPerms = ButtonPermissionBuilder.Build(BtnPermissionMap);
         }
 
         internal async Task InitialAsync(EmailSettingView owner)
@@ -53,19 +54,14 @@ namespace Admin.Desktop.ViewModel.SettingManagement.EmailSettings
             }
         }
 
-        private void LoadButtonPermissions()
+        /// <summary>
+        /// 页面按钮键名 -> 权限编码 的映射。
+        /// 键名需与 EmailSettingView 中 Visibility="{Binding BtnPerms[键名]}" 的绑定一致。
+        /// </summary>
+        private static readonly Dictionary<string, string> BtnPermissionMap = new()
         {
-            var btnTemps = new Dictionary<string, string>
-            {
-                { "EmailingTest",SettingManagementPermissions.EmailingTest}
-            };
-
-            foreach (var btnTemp in btnTemps)
-            {
-                var isGranted = App.PermissionChecker(btnTemp.Value);
-                BtnPerms.TryAdd(btnTemp.Key, isGranted);
-            }
-        }
+            { "EmailingTest", SettingManagementPermissions.EmailingTest },
+        };
 
         [RelayCommand]
         public void SendTestEmail()

@@ -115,16 +115,15 @@ namespace Admin.Desktop
 
         internal static Visibility PermissionChecker(string permissionName)
         {
-            if (CurrentUserPermissions.TryGetValue(permissionName, out var isGranted))
+            //权限编码为空：占位/暂未绑定权限的按钮，默认可见
+            if (string.IsNullOrEmpty(permissionName))
             {
-                if (!isGranted)
-                {
-                    //无权限
-                    return Visibility.Collapsed;
-                }
+                return Visibility.Visible;
             }
-            //有权限或未配置则显示
-            return Visibility.Visible;
+            //仅授予权限时显示；未授予或未知编码一律折叠（权限不足时不暴露操作入口）
+            return CurrentUserPermissions.TryGetValue(permissionName, out var isGranted) && isGranted
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)

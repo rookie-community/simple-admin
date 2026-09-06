@@ -4,12 +4,10 @@ using Admin.Desktop.View;
 using Admin.Desktop.View.AuditLogs;
 using Admin.Desktop.View.Identity.OrganizationUnits;
 using Admin.Desktop.View.Permissions;
-using Admin.Desktop.View.Quartzs;
 using Admin.Desktop.View.Reports;
 using Admin.Desktop.View.SettingManagement.EmailSettings;
 using Admin.Desktop.View.Tenants;
 using Admin.Desktop.View.Users;
-using Admin.Permissions;
 using Volo.Abp.Identity;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
@@ -121,14 +119,6 @@ namespace Admin.Desktop.Tools
                                 Content = typeof(EmailSettingView).FullName,
                             }
                         }
-                    },
-                    new NavDto
-                    {
-                        Icon = "\xf017",
-                        Name = "定时任务",
-                        Type = NavType.UserControl,
-                        PermissionName = QuartzPermissions.Jobs.Default,
-                        Content = typeof(QuartzView).FullName,
                     },
                 }
             };

@@ -1,7 +1,6 @@
 using Admin.EntityFrameworkCore;
 using Admin.HealthChecks;
 using Admin.MultiTenancy;
-using Admin.Quartzs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -210,10 +209,6 @@ public class AdminHttpApiHostModule : AbpModule
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        //Quartz 初始化
-        //var initializer = context.ServiceProvider.GetRequiredService<QuartzInitializer>();
-        //AsyncHelper.RunSync(initializer.InitializeAsync);
-
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 

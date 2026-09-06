@@ -1,4 +1,5 @@
-﻿using Admin.Desktop.View.Identity.Roles;
+﻿using Admin.Desktop.Tools;
+using Admin.Desktop.View.Identity.Roles;
 using Admin.Desktop.View.Permissions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -46,7 +47,7 @@ namespace Admin.Desktop.ViewModel.Permissions
         {
             _identityRoleAppService = identityRoleAppService;
             _logger = logger;
-            LoadButtonPermissions();
+            BtnPerms = ButtonPermissionBuilder.Build(BtnPermissionMap);
         }
 
         internal async Task InitialAsync(RoleView owner)
@@ -55,22 +56,17 @@ namespace Admin.Desktop.ViewModel.Permissions
             await SearchCommand.ExecuteAsync(null);
         }
 
-        private void LoadButtonPermissions()
+        /// <summary>
+        /// 页面按钮键名 -> 权限编码 的映射。
+        /// 键名需与 RoleView 中 Visibility="{Binding BtnPerms[键名]}" 的绑定一致。
+        /// </summary>
+        private static readonly Dictionary<string, string> BtnPermissionMap = new()
         {
-            var btnTemps = new Dictionary<string, string>
-            {
-                { "Create",IdentityPermissions.Roles.Create},
-                { "Update",IdentityPermissions.Roles.Update },
-                { "ManagePermissions", IdentityPermissions.Roles.ManagePermissions },
-                { "Delete", IdentityPermissions.Roles.Delete },
-            };
-
-            foreach (var btnTemp in btnTemps)
-            {
-                var isGranted = App.PermissionChecker(btnTemp.Value);
-                BtnPerms.TryAdd(btnTemp.Key, isGranted);
-            }
-        }
+            { "Create", IdentityPermissions.Roles.Create },
+            { "Update", IdentityPermissions.Roles.Update },
+            { "ManagePermissions", IdentityPermissions.Roles.ManagePermissions },
+            { "Delete", IdentityPermissions.Roles.Delete },
+        };
 
         [RelayCommand]
         private async Task SearchAsync()
