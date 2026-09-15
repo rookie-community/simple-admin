@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Volo.Abp.UI.Navigation.ApplicationMenu
+@{
     ViewData["Title"] = "Home Page";
     Layout = null;
 }
@@ -94,20 +95,7 @@
                     <div class="layui-logo" lay-href="/Home/Console">
                         <span>ADMIN-UI-PRO</span>
                     </div>
-                    <ul class="layui-nav layui-nav-tree" lay-accordion id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                            <a href="javascript:" lay-tips="主页" lay-direction="2">
-                                <i class="layui-icon layui-icon-home"></i><cite>主页</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="home" class="layui-this">
-                                    <a lay-href="/Home/Console">
-                                        <i class="layui-icon layui-icon-dialogue"></i><cite>AI对话</cite>
-                                    </a>
-                                </dd>
-                            </dl>
-                        </li>
-                    </ul>
+                    @await Html.PartialAsync("_SideMenu", Model)
                 </div>
             </div>
             <!-- 页面标签 -->
@@ -150,16 +138,13 @@
         }).use(['index'], function () {
 
         layui.admin.events.logout = function () {
-        const loading = layui.layer.load();
-        layui.admin.req({
-        url: 'json/logout.json', type: 'GET', data: {},
-        done: function () {
-        layui.admin.exit(function () {
-        location.href = 'login.html';
-        });
-        }, complete: function () {
-        layui.layer.close(loading);
-        }
+        // MVC + Cookie 认证：整页跳转退出端点，由服务端清除 Cookie 后跳转登录页
+        layui.layer.confirm('确定要退出登录吗？', {
+        icon: 3,
+        title: '提示'
+        }, function (index) {
+        layui.layer.close(index);
+        location.href = '/Account/Logout';
         });
         };
 

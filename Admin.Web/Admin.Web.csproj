@@ -25,8 +25,8 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Admin.Application\Admin.Application.csproj" />
+		<ProjectReference Include="..\Admin.EntityFrameworkCore\Admin.EntityFrameworkCore.csproj" />
 		<ProjectReference Include="..\Admin.HttpApi\Admin.HttpApi.csproj" />
-		<ProjectReference Include="..\Admin.MongoDB\Admin.MongoDB.csproj" />
 	</ItemGroup>
 
 </Project>

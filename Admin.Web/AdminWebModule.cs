@@ -1,9 +1,13 @@
-﻿using Admin.Localization;
-using Admin.MongoDB;
+using Admin.EntityFrameworkCore;
+using Admin.Localization;
+using Admin.Web.Theming;
 using Admin.MultiTenancy;
 using Admin.Web.HealthChecks;
+using Admin.Web.Menus;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi;
 using OpenIddict.Server.AspNetCore;
 using OpenIddict.Validation.AspNetCore;
@@ -12,6 +16,7 @@ using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.Libs;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
+using Volo.Abp.AspNetCore.Mvc.UI.Theming;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.AspNetCore.SignalR;
 using Volo.Abp.Autofac;
@@ -21,7 +26,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
-using Volo.Abp.Threading;
+using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 
@@ -30,8 +35,8 @@ namespace Admin.Web
     [DependsOn(
         typeof(AdminHttpApiModule),
         typeof(AdminApplicationModule),
-        //typeof(AdminEntityFrameworkCoreModule),
-        typeof(AdminMongoDbModule),
+        typeof(AdminEntityFrameworkCoreModule),
+        //typeof(AdminMongoDbModule),
         typeof(AbpAutofacModule),
         typeof(AbpIdentityAspNetCoreModule),
         typeof(AbpOpenIddictAspNetCoreModule),
@@ -127,9 +132,23 @@ namespace Admin.Web
                 options.IsDynamicPermissionStoreEnabled = true;
             });
 
+            // 注册 ABP 菜单贡献者：layuiadmin 外壳页的左侧菜单由它驱动
+            Configure<AbpNavigationOptions>(options =>
+            {
+                options.MenuContributors.Add(new AdminMainMenuContributor());
+            });
+
             Configure<AbpMvcLibsOptions>(options =>
             {
                 options.CheckLibs = false;
+            });
+
+            Configure<AbpThemingOptions>(options =>
+            {
+                // 仅设置 DefaultThemeName 无效：异常来自"未注册任何主题"的检查。
+                // ABP 内建视图（OpenIddict 授权页等）会通过 IThemeManager 取布局，必须注册一个主题。
+                options.Themes.Add<LayuiTheme>();
+                options.DefaultThemeName = LayuiTheme.Name;
             });
         }
 
@@ -237,7 +256,17 @@ namespace Admin.Web
             });
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
-            app.UseConfiguredEndpoints();
+            app.UseConfiguredEndpoints(endpoints =>
+            {
+                // 配置路由
+                endpoints.MapControllerRoute(
+                    name: "defaultArea",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

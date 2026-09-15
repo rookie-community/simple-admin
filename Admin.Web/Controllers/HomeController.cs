@@ -1,15 +1,26 @@
 using Admin.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.UI.Navigation;
 
 namespace Admin.Web.Controllers
 {
+    [Authorize]
     public class HomeController : AbpController
     {
-        public IActionResult Index()
+        private readonly IMenuManager _menuManager;
+
+        public HomeController(IMenuManager menuManager)
         {
-            return View();
+            _menuManager = menuManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var menu = await _menuManager.GetAsync(StandardMenus.Main);
+            return View(menu);
         }
 
         public IActionResult Console()

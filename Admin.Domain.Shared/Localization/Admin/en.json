@@ -3,6 +3,18 @@
   "Texts": {
     "AppName": "Admin",
     "Menu:Home": "Home",
+    "Menu:HomePage": "Home",
+    "Menu:Workbench": "Workspace",
+    "Menu:Console": "Console",
+    "Menu:System": "System",
+    "Menu:Users": "Users",
+    "Menu:Roles": "Roles",
+    "Menu:OrganizationUnits": "Organization Units",
+    "Menu:Permissions": "Permissions",
+    "Menu:Logs": "Logs",
+    "Menu:AuditLogs": "Audit Logs",
+    "Menu:Jobs": "Jobs",
+    "Menu:ScheduledJobs": "Scheduled Jobs",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome"
   }

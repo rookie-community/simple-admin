@@ -1,0 +1,311 @@
+@model Admin.Web.Models.RoleIndexViewModel
+@{
+    ViewData["Title"] = "角色管理";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>角色管理 - ADMIN-UI-PRO</title>
+    <link href="/lib/layui-admin/layui/css/layui.css" rel="stylesheet">
+    <link href="/lib/layui-admin/admin-ui/css/admin.css" rel="stylesheet">
+</head>
+<body class="layui-fluid">
+
+    <!-- 搜索区 -->
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form" lay-filter="LAY-role-search">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键字</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Filter" placeholder="角色名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="LAY-role-search-submit"><i class="layui-icon layui-icon-search"></i>搜索</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="LAY-role-reset">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 列表 -->
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="LAY-role-manage" lay-filter="LAY-role-manage"></table>
+        </div>
+    </div>
+
+    <!-- 工具栏模板 -->
+    <script type="text/html" id="LAY-role-toolbar">
+        <div class="layui-btn-container">
+            @if (Model.CanCreate)
+            {
+                <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>新增</button>
+            }
+            @if (Model.CanDelete)
+            {
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+            }
+        </div>
+    </script>
+
+    <!-- 行操作模板 -->
+    <script type="text/html" id="LAY-role-row-ops">
+        <div class="layui-btn-container">
+            @if (Model.CanUpdate)
+            {
+                <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+            }
+            @if (Model.CanManagePermissions)
+            {
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="perm"><i class="layui-icon layui-icon-password"></i>权限</a>
+            }
+            @if (Model.CanDelete)
+            {
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            }
+        </div>
+    </script>
+
+    <!-- 布尔状态模板 -->
+    <script type="text/html" id="LAY-role-bool-tpl">
+        {{# if(d){ }}
+        <span class="layui-badge layui-bg-green">是</span>
+        {{# } else { }}
+        <span class="layui-badge">否</span>
+        {{# } }}
+    </script>
+
+    <!-- 静态角色模板 -->
+    <script type="text/html" id="LAY-role-static-tpl">
+        {{# if(d.isStatic){ }}
+        <span class="layui-badge layui-bg-orange">静态</span>
+        {{# } else { }}
+        <span class="layui-badge layui-bg-gray">动态</span>
+        {{# } }}
+    </script>
+
+    <!-- 新增 / 编辑表单模板 -->
+    <script type="text/html" id="LAY-role-form-tpl">
+        <form class="layui-form" lay-filter="LAY-role-form" style="padding: 20px 25px 0 5px;">
+            <input type="hidden" name="Id" value="">
+            <input type="hidden" name="ConcurrencyStamp" value="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Name" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否默认</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="IsDefault" value="true" lay-skin="switch" lay-text="是|否">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否公共</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="IsPublic" value="true" lay-skin="switch" lay-text="是|否">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="LAY-role-form-submit">保存</button>
+                    <button type="button" class="layui-btn layui-btn-primary" id="LAY-role-form-cancel">取消</button>
+                </div>
+            </div>
+        </form>
+    </script>
+
+    <script src="/lib/layui-admin/layui/layui.js"></script>
+    <script>
+        layui.config({ base: '/lib/layui-admin/', version: true }).use(['index', 'table', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var table = layui.table;
+            var form = layui.form;
+            var layer = layui.layer;
+
+            var TABLE_ID = 'LAY-role-manage';
+            var urls = {
+                list: '@Url.Action("GetList", "Roles", new { area = "Admin" })',
+                create: '@Url.Action("Create", "Roles", new { area = "Admin" })',
+                update: '@Url.Action("Update", "Roles", new { area = "Admin" })',
+                del: '@Url.Action("Delete", "Roles", new { area = "Admin" })',
+                batchDelete: '@Url.Action("BatchDelete", "Roles", new { area = "Admin" })',
+                permissions: '@Url.Action("Index", "Permissions", new { area = "Admin" })'
+            };
+
+            var activeForm = null;   // 当前弹出表单的 jQuery 对象
+            var activeIndex = null;  // 当前弹层索引
+
+            // 统一 POST 请求封装（layui {code, msg} 契约）
+            function api(url, data, done) {
+                var idx = layer.load(1);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function (res) {
+                        layer.close(idx);
+                        if (res && res.code === 0) { done(res); }
+                        else { layer.msg((res && res.msg) || '操作失败', { icon: 2 }); }
+                    },
+                    error: function () {
+                        layer.close(idx);
+                        layer.msg('网络异常，请稍后重试', { icon: 2 });
+                    }
+                });
+            }
+
+            // 渲染表格
+            table.render({
+                elem: '#' + TABLE_ID,
+                url: urls.list,
+                method: 'get',
+                toolbar: '#LAY-role-toolbar',
+                defaultToolbar: ['filter'],
+                page: true,
+                limit: 10,
+                limits: [10, 20, 30, 50, 100],
+                cols: [[
+                    { type: 'checkbox', fixed: 'left' },
+                    { field: 'name', title: '角色名称', minWidth: 200, sort: true },
+                    { field: 'isDefault', title: '是否默认', width: 120, sort: true, templet: '#LAY-role-bool-tpl' },
+                    { field: 'isPublic', title: '是否公共', width: 120, sort: true, templet: '#LAY-role-bool-tpl' },
+                    { field: 'isStatic', title: '类型', width: 110, sort: true, templet: '#LAY-role-static-tpl' },
+                    { title: '操作', width: 180, toolbar: '#LAY-role-row-ops', fixed: 'right' }
+                ]]
+            });
+
+            // 搜索
+            form.on('submit(LAY-role-search-submit)', function (data) {
+                table.reload(TABLE_ID, { where: data.field, page: { curr: 1 } });
+                return false;
+            });
+
+            // 重置
+            $('#LAY-role-reset').on('click', function () {
+                $('form[lay-filter="LAY-role-search"] input[name="Filter"]').val('');
+                table.reload(TABLE_ID, { where: {}, page: { curr: 1 } });
+            });
+
+            // 打开新增 / 编辑弹窗
+            function openRoleForm(title, role) {
+                layer.open({
+                    type: 1,
+                    title: title,
+                    area: ['480px', '360px'],
+                    content: $('#LAY-role-form-tpl').html(),
+                    success: function (layero, index) {
+                        var $layer = $(layero);
+                        var $form = $layer.find('form');
+                        activeForm = $form;
+                        activeIndex = index;
+
+                        if (role) {
+                            $form.find('input[name="Id"]').val(role.id || '');
+                            $form.find('input[name="ConcurrencyStamp"]').val(role.concurrencyStamp || '');
+                            $form.find('input[name="Name"]').val(role.name || '');
+                            $form.find('input[name="IsDefault"]').prop('checked', role.isDefault === true);
+                            $form.find('input[name="IsPublic"]').prop('checked', role.isPublic === true);
+                        } else {
+                            $form.find('input[name="IsDefault"]').prop('checked', false);
+                            $form.find('input[name="IsPublic"]').prop('checked', true);
+                        }
+
+                        form.render();
+
+                        $form.find('#LAY-role-form-cancel').on('click', function () {
+                            layer.close(index);
+                        });
+                    }
+                });
+            }
+
+            // 保存（新增 / 编辑共用）
+            form.on('submit(LAY-role-form-submit)', function (data) {
+                var id = activeForm ? activeForm.find('input[name="Id"]').val() : '';
+
+                var payload = {
+                    id: id || null,
+                    name: data.field.Name,
+                    isDefault: activeForm ? activeForm.find('input[name="IsDefault"]').prop('checked') : false,
+                    isPublic: activeForm ? activeForm.find('input[name="IsPublic"]').prop('checked') : false,
+                    concurrencyStamp: activeForm ? activeForm.find('input[name="ConcurrencyStamp"]').val() : ''
+                };
+
+                api(id ? urls.update : urls.create, payload, function () {
+                    layer.close(activeIndex);
+                    layer.msg(id ? '更新成功' : '新增成功', { icon: 1 });
+                    table.reload(TABLE_ID);
+                });
+
+                return false;
+            });
+
+            // 工具栏事件
+            table.on('toolbar(' + TABLE_ID + ')', function (obj) {
+                if (obj.event === 'add') {
+                    openRoleForm('新增角色', null);
+                } else if (obj.event === 'batchDelete') {
+                    var checked = table.checkStatus(TABLE_ID).data;
+                    if (checked.length === 0) {
+                        layer.msg('请先选择要删除的角色', { icon: 2 });
+                        return;
+                    }
+                    var names = checked.map(function (d) { return d.name; }).join('、');
+                    layer.confirm('确定删除选中的 ' + checked.length + ' 个角色吗？（' + names + '）', { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        var ids = checked.map(function (d) { return d.id; }).join(',');
+                        api(urls.batchDelete, { ids: ids }, function () {
+                            layer.msg('批量删除成功', { icon: 1 });
+                            table.reload(TABLE_ID);
+                        });
+                    });
+                }
+            });
+
+            // 行操作事件
+            table.on('tool(' + TABLE_ID + ')', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit') {
+                    if (data.isStatic) {
+                        layer.msg('静态角色不允许编辑', { icon: 2 });
+                        return;
+                    }
+                    openRoleForm('编辑角色 - ' + data.name, data);
+                } else if (obj.event === 'perm') {
+                    layer.open({
+                        type: 2,
+                        title: '角色权限 - ' + data.name,
+                        area: ['760px', '560px'],
+                        maxmin: true,
+                        content: urls.permissions + '?providerName=R&providerKey=' + encodeURIComponent(data.name)
+                    });
+                } else if (obj.event === 'del') {
+                    if (data.isStatic) {
+                        layer.msg('静态角色不允许删除', { icon: 2 });
+                        return;
+                    }
+                    layer.confirm('确定删除角色「' + data.name + '」吗？', { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        api(urls.del, { id: data.id }, function () {
+                            layer.msg('删除成功', { icon: 1 });
+                            table.reload(TABLE_ID);
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+@model Volo.Abp.UI.Navigation.ApplicationMenu
+@{
+    // 含子项渲染为分组(dl)，无子项渲染为叶子；图标已含 layui-icon- 前缀。
+    string CleanUrl(string? url) =>
+        string.IsNullOrWhiteSpace(url) ? string.Empty : url.Replace("~", string.Empty).TrimEnd('/');
+
+    var currentPath = CleanUrl(Context.Request.Path.Value);
+
+    // 选中规则：优先按当前请求地址精确匹配；无匹配时默认选中第一个叶子菜单
+    string? selectedUrl = null;
+
+    foreach (var item in Model.Items.OrderBy(i => i.Order))
+    {
+        var children = item.Items.OrderBy(c => c.Order).ToList();
+        if (children.Count == 0)
+        {
+            if (CleanUrl(item.Url) == currentPath)
+            {
+                selectedUrl = item.Url;
+            }
+        }
+        else
+        {
+            var hit = children.FirstOrDefault(c => CleanUrl(c.Url) == currentPath);
+            if (hit != null)
+            {
+                selectedUrl = hit.Url;
+            }
+        }
+
+        if (selectedUrl != null)
+        {
+            break;
+        }
+    }
+
+    if (selectedUrl == null)
+    {
+        foreach (var item in Model.Items.OrderBy(i => i.Order))
+        {
+            var firstChild = item.Items.OrderBy(c => c.Order).FirstOrDefault();
+            selectedUrl = item.Items.Count == 0 ? item.Url : firstChild?.Url;
+            if (selectedUrl != null)
+            {
+                break;
+            }
+        }
+    }
+}
+<ul class="layui-nav layui-nav-tree" lay-accordion id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+@foreach (var item in Model.Items.OrderBy(i => i.Order))
+{
+    var children = item.Items.OrderBy(c => c.Order).ToList();
+    if (children.Count == 0)
+    {
+        var isActive = item.Url == selectedUrl;
+        <li data-name="@item.Name" class="layui-nav-item @(isActive ? "layui-this" : "")">
+            <a lay-href="@item.Url">
+                <i class="layui-icon @(string.IsNullOrWhiteSpace(item.Icon) ? "layui-icon-app" : item.Icon)"></i><cite>@item.DisplayName</cite>
+            </a>
+        </li>
+    }
+    else
+    {
+        var isGroupActive = children.Any(c => c.Url == selectedUrl);
+        <li data-name="@item.Name" class="layui-nav-item @(isGroupActive ? "layui-nav-itemed" : "")">
+            <a href="javascript:" lay-tips="@item.DisplayName" lay-direction="2">
+                <i class="layui-icon @(string.IsNullOrWhiteSpace(item.Icon) ? "layui-icon-app" : item.Icon)"></i><cite>@item.DisplayName</cite>
+            </a>
+            <dl class="layui-nav-child">
+                @foreach (var child in children)
+                {
+                    var isChildActive = child.Url == selectedUrl;
+                    <dd data-name="@child.Name" class="@(isChildActive ? "layui-this" : "")">
+                        <a lay-href="@child.Url">
+                            <i class="layui-icon @(string.IsNullOrWhiteSpace(child.Icon) ? "layui-icon-dot" : child.Icon)"></i><cite>@child.DisplayName</cite>
+                        </a>
+                    </dd>
+                }
+            </dl>
+        </li>
+    }
+}
+</ul>

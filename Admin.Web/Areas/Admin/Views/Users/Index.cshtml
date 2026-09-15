@@ -1,0 +1,392 @@
+@model Admin.Web.Models.UserIndexViewModel
+@{
+    ViewData["Title"] = "用户管理";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户管理 - ADMIN-UI-PRO</title>
+    <link href="/lib/layui-admin/layui/css/layui.css" rel="stylesheet">
+    <link href="/lib/layui-admin/admin-ui/css/admin.css" rel="stylesheet">
+</head>
+<body class="layui-fluid">
+
+    <!-- 搜索区 -->
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form" lay-filter="LAY-user-search">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键字</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Filter" placeholder="用户名 / 邮箱 / 电话 / 姓名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="LAY-user-search-submit"><i class="layui-icon layui-icon-search"></i>搜索</button>
+                        <button type="button" class="layui-btn layui-btn-primary" id="LAY-user-reset">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 列表 -->
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="LAY-user-manage" lay-filter="LAY-user-manage"></table>
+        </div>
+    </div>
+
+    <!-- 工具栏模板 -->
+    <script type="text/html" id="LAY-user-toolbar">
+        <div class="layui-btn-container">
+            @if (Model.CanCreate)
+            {
+                <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>新增</button>
+            }
+            @if (Model.CanDelete)
+            {
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDelete"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+            }
+        </div>
+    </script>
+
+    <!-- 行操作模板 -->
+    <script type="text/html" id="LAY-user-row-ops">
+        <div class="layui-btn-container">
+            @if (Model.CanUpdate)
+            {
+                <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+            }
+            @if (Model.CanManagePermissions)
+            {
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="perm"><i class="layui-icon layui-icon-password"></i>权限</a>
+            }
+            @if (Model.CanDelete)
+            {
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            }
+        </div>
+    </script>
+
+    <!-- 状态模板 -->
+    <script type="text/html" id="LAY-user-active-tpl">
+        {{# if(d.isActive){ }}
+        <span class="layui-badge layui-bg-green">已激活</span>
+        {{# } else { }}
+        <span class="layui-badge">已禁用</span>
+        {{# } }}
+    </script>
+
+    <!-- 新增 / 编辑表单模板 -->
+    <script type="text/html" id="LAY-user-form-tpl">
+        <form class="layui-form" lay-filter="LAY-user-form" style="padding: 20px 25px 0 5px;">
+            <input type="hidden" name="Id" value="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="UserName" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="Password" placeholder="新增时必填，编辑时留空表示不修改" autocomplete="new-password" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Name" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">姓氏</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Surname" placeholder="请输入姓氏" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="PhoneNumber" placeholder="请输入电话" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">账号状态</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="IsActive" value="true" lay-skin="switch" lay-text="启用|禁用">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">锁定策略</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="LockoutEnabled" value="true" lay-skin="switch" lay-text="开启|关闭">
+                </div>
+            </div>
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">分配角色</label>
+                <div class="layui-input-block" id="LAY-user-role-box"></div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="LAY-user-form-submit">保存</button>
+                    <button type="button" class="layui-btn layui-btn-primary" id="LAY-user-form-cancel">取消</button>
+                </div>
+            </div>
+        </form>
+    </script>
+
+    <script src="/lib/layui-admin/layui/layui.js"></script>
+    <script>
+        layui.config({ base: '/lib/layui-admin/', version: true }).use(['index', 'table', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var table = layui.table;
+            var form = layui.form;
+            var layer = layui.layer;
+
+            var TABLE_ID = 'LAY-user-manage';
+            var urls = {
+                list: '@Url.Action("GetList", "Users", new { area = "Admin" })',
+                roles: '@Url.Action("GetAssignableRoles", "Users", new { area = "Admin" })',
+                create: '@Url.Action("Create", "Users", new { area = "Admin" })',
+                update: '@Url.Action("Update", "Users", new { area = "Admin" })',
+                del: '@Url.Action("Delete", "Users", new { area = "Admin" })',
+                batchDelete: '@Url.Action("BatchDelete", "Users", new { area = "Admin" })',
+                permissions: '@Url.Action("Index", "Permissions", new { area = "Admin" })'
+            };
+
+            var activeForm = null;   // 当前弹出表单的 jQuery 对象
+            var activeIndex = null;  // 当前弹层索引
+
+            function formatDateTime(value) {
+                if (!value) { return ''; }
+                var d = new Date(value);
+                if (isNaN(d.getTime())) { return value; }
+                var p = function (n) { return n < 10 ? '0' + n : n; };
+                return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+                    + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+            }
+
+            // 统一 POST 请求封装（layui {code, msg} 契约）
+            function api(url, data, done) {
+                var idx = layer.load(1);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function (res) {
+                        layer.close(idx);
+                        if (res && res.code === 0) { done(res); }
+                        else { layer.msg((res && res.msg) || '操作失败', { icon: 2 }); }
+                    },
+                    error: function () {
+                        layer.close(idx);
+                        layer.msg('网络异常，请稍后重试', { icon: 2 });
+                    }
+                });
+            }
+
+            // 渲染表格
+            table.render({
+                elem: '#' + TABLE_ID,
+                url: urls.list,
+                method: 'get',
+                toolbar: '#LAY-user-toolbar',
+                defaultToolbar: ['filter'],
+                page: true,
+                limit: 10,
+                limits: [10, 20, 30, 50, 100],
+                cols: [[
+                    { type: 'checkbox', fixed: 'left' },
+                    { field: 'userName', title: '用户名', minWidth: 140, sort: true },
+                    { field: 'name', title: '姓名', minWidth: 140, templet: function (d) { return ((d.name || '') + ' ' + (d.surname || '')).trim(); } },
+                    { field: 'email', title: '邮箱', minWidth: 200 },
+                    { field: 'phoneNumber', title: '电话', minWidth: 140 },
+                    { field: 'isActive', title: '状态', width: 100, templet: '#LAY-user-active-tpl' },
+                    { field: 'creationTime', title: '创建时间', width: 180, sort: true, templet: function (d) { return formatDateTime(d.creationTime); } },
+                    { title: '操作', width: 180, toolbar: '#LAY-user-row-ops', fixed: 'right' }
+                ]]
+            });
+
+            // 搜索
+            form.on('submit(LAY-user-search-submit)', function (data) {
+                table.reload(TABLE_ID, { where: data.field, page: { curr: 1 } });
+                return false;
+            });
+
+            // 重置
+            $('#LAY-user-reset').on('click', function () {
+                $('form[lay-filter="LAY-user-search"] input[name="Filter"]').val('');
+                table.reload(TABLE_ID, { where: {}, page: { curr: 1 } });
+            });
+
+            // 加载可分配角色
+            function loadRoles(userId, $form) {
+                var box = $form.find('#LAY-user-role-box');
+                box.html('<span style="color:#999;">加载中...</span>');
+                $.ajax({
+                    url: urls.roles + (userId ? '?userId=' + encodeURIComponent(userId) : ''),
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res && res.code === 0) {
+                            var roles = res.data || [];
+                            if (roles.length === 0) {
+                                box.html('<span style="color:#999;">暂无可分配角色</span>');
+                                return;
+                            }
+                            var html = '';
+                            layui.each(roles, function (i, r) {
+                                html += '<input type="checkbox" name="RoleNames" value="' + r.name + '" title="' + r.name + '"'
+                                    + (r.isDefault ? ' checked' : '') + '>';
+                            });
+                            box.html(html);
+                            form.render('checkbox');
+                        } else {
+                            box.html('<span style="color:#999;">角色加载失败</span>');
+                        }
+                    },
+                    error: function () {
+                        box.html('<span style="color:#999;">角色加载失败</span>');
+                    }
+                });
+            }
+
+            // 打开新增 / 编辑弹窗
+            function openUserForm(title, user) {
+                layer.open({
+                    type: 1,
+                    title: title,
+                    area: ['560px', '660px'],
+                    content: $('#LAY-user-form-tpl').html(),
+                    success: function (layero, index) {
+                        var $layer = $(layero);
+                        var $form = $layer.find('form');
+                        activeForm = $form;
+                        activeIndex = index;
+
+                        if (user) {
+                            $form.find('input[name="Id"]').val(user.id || '');
+                            $form.find('input[name="UserName"]').val(user.userName || '');
+                            $form.find('input[name="Name"]').val(user.name || '');
+                            $form.find('input[name="Surname"]').val(user.surname || '');
+                            $form.find('input[name="Email"]').val(user.email || '');
+                            $form.find('input[name="PhoneNumber"]').val(user.phoneNumber || '');
+                            $form.find('input[name="IsActive"]').prop('checked', user.isActive !== false);
+                            $form.find('input[name="LockoutEnabled"]').prop('checked', user.lockoutEnabled !== false);
+                        } else {
+                            $form.find('input[name="IsActive"]').prop('checked', true);
+                            $form.find('input[name="LockoutEnabled"]').prop('checked', true);
+                        }
+
+                        form.render();
+
+                        $form.find('#LAY-user-form-cancel').on('click', function () {
+                            layer.close(index);
+                        });
+
+                        loadRoles(user ? user.id : null, $form);
+                    }
+                });
+            }
+
+            // 保存（新增 / 编辑共用）
+            form.on('submit(LAY-user-form-submit)', function (data) {
+                var id = activeForm ? activeForm.find('input[name="Id"]').val() : '';
+                var password = activeForm ? activeForm.find('input[name="Password"]').val() : '';
+
+                if (!id && !password) {
+                    layer.msg('请输入初始密码', { icon: 2 });
+                    return false;
+                }
+
+                var roleNames = [];
+                if (activeForm) {
+                    activeForm.find('input[name="RoleNames"]:checked').each(function () {
+                        roleNames.push(this.value);
+                    });
+                }
+
+                var payload = {
+                    id: id || null,
+                    userName: data.field.UserName,
+                    password: password,
+                    name: data.field.Name,
+                    surname: data.field.Surname,
+                    email: data.field.Email,
+                    phoneNumber: data.field.PhoneNumber,
+                    isActive: activeForm ? activeForm.find('input[name="IsActive"]').prop('checked') : true,
+                    lockoutEnabled: activeForm ? activeForm.find('input[name="LockoutEnabled"]').prop('checked') : true,
+                    roleNames: roleNames.join(',')
+                };
+
+                api(id ? urls.update : urls.create, payload, function () {
+                    layer.close(activeIndex);
+                    layer.msg(id ? '更新成功' : '新增成功', { icon: 1 });
+                    table.reload(TABLE_ID);
+                });
+
+                return false;
+            });
+
+            // 工具栏事件
+            table.on('toolbar(' + TABLE_ID + ')', function (obj) {
+                if (obj.event === 'add') {
+                    openUserForm('新增用户', null);
+                } else if (obj.event === 'batchDelete') {
+                    var checked = table.checkStatus(TABLE_ID).data;
+                    if (checked.length === 0) {
+                        layer.msg('请先选择要删除的用户', { icon: 2 });
+                        return;
+                    }
+                    var names = checked.map(function (d) { return d.userName; }).join('、');
+                    layer.confirm('确定删除选中的 ' + checked.length + ' 个用户吗？（' + names + '）', { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        var ids = checked.map(function (d) { return d.id; }).join(',');
+                        api(urls.batchDelete, { ids: ids }, function () {
+                            layer.msg('批量删除成功', { icon: 1 });
+                            table.reload(TABLE_ID);
+                        });
+                    });
+                }
+            });
+
+            // 行操作事件
+            table.on('tool(' + TABLE_ID + ')', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'edit') {
+                    openUserForm('编辑用户 - ' + data.userName, data);
+                } else if (obj.event === 'perm') {
+                    layer.open({
+                        type: 2,
+                        title: '用户权限 - ' + data.userName,
+                        area: ['760px', '560px'],
+                        maxmin: true,
+                        content: urls.permissions + '?providerName=U&providerKey=' + encodeURIComponent(data.userName)
+                    });
+                } else if (obj.event === 'del') {
+                    layer.confirm('确定删除用户「' + data.userName + '」吗？', { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        api(urls.del, { id: data.id }, function () {
+                            layer.msg('删除成功', { icon: 1 });
+                            table.reload(TABLE_ID);
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

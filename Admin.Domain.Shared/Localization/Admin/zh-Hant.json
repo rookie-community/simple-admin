@@ -3,6 +3,18 @@
   "Texts": {
     "AppName": "Admin",
     "Menu:Home": "Home",
+    "Menu:HomePage": "首頁",
+    "Menu:Workbench": "工作臺",
+    "Menu:Console": "AI 對話",
+    "Menu:System": "系統管理",
+    "Menu:Users": "使用者管理",
+    "Menu:Roles": "角色管理",
+    "Menu:OrganizationUnits": "組織架構",
+    "Menu:Permissions": "權限管理",
+    "Menu:Logs": "日誌審計",
+    "Menu:AuditLogs": "稽核日誌",
+    "Menu:Jobs": "任務調度",
+    "Menu:ScheduledJobs": "定時任務",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome"
   }
